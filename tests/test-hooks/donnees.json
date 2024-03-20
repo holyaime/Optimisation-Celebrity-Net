@@ -1,0 +1,11 @@
+{
+    "nom": "Alice",
+    "age": 30,
+    "ville": "Paris",
+    "amis": ["Bob", "Charlie", "David"],
+    "adresse": {
+      "rue": "123 rue Principale",
+      "ville": "Paris",
+      "code_postal": "75001"
+    }
+  }
