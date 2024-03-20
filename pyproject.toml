@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "celebrity-recognition-ai"
+version = "0.1.0"
+description = ""
+authors = ["Béranger GUEDOU <beranger@datakori.tech>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pre-commit = "^3.6.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
