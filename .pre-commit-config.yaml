@@ -9,12 +9,6 @@ repos:
         language: system
         types: [python]
 
-      - id: semgrep
-        name: semgrep
-        entry: poetry run semgrep scan
-        language: system
-        types: [python]
-
       - id: trailing-whitespace-fixer
         name: trailing-whitespace-fixer
         entry: trailing-whitespace-fixer
@@ -77,5 +71,11 @@ repos:
       - id: security
         name: bandit
         entry: poetry run python -m bandit -x tests -r celebrity_recognition_ai
+        language: system
+        types: [python]
+      
+      - id: semgrep
+        name: semgrep
+        entry: poetry run semgrep scan
         language: system
         types: [python]
