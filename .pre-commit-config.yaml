@@ -20,6 +20,7 @@ repos:
         entry: end-of-file-fixer
         language: system
         types: [python]
+        
       - id: check-docstring-first
         name: check-docstring-first
         entry: check-docstring-first
