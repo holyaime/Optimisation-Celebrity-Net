@@ -8,16 +8,19 @@ repos:
         entry: check-yaml
         language: system
         types: [python]
+
       - id: semgrep
         name: semgrep
         entry: poetry run semgrep scan
         language: system
         types: [python]
+
       - id: trailing-whitespace-fixer
         name: trailing-whitespace-fixer
         entry: trailing-whitespace-fixer
         language: system
         types: [python]
+
       - id: end-of-file-fixer
         name: end-of-file-fixer
         entry: end-of-file-fixer
@@ -28,41 +31,49 @@ repos:
         entry: check-docstring-first
         language: system
         types: [python]
+
       - id: check-merge-conflict
         name: check-merge-conflict
         entry: check-merge-conflict
         language: system
         types: [python]
+
       - id: fix-encoding-pragma
         name: fix-encoding-pragma
         entry: fix-encoding-pragma
         language: system
         types: [python]
+
       - id: no-commit-to-branch
         name: no-commit-to-branch
         entry: no-commit-to-branch
         language: system
         types: [python]
+
       - id: check-added-large-files
         name: check-added-large-files
         entry: check-added-large-files
         language: system
         types: [python]
+
       - id: code formater
         name: black
         entry: poetry run python -m black celebrity_recognition_ai tests
         language: system
         types: [python]
+        
       - id: sort imports
         name: isort
         entry: poetry run python -m isort celebrity_recognition_ai tests
         language: system
         types: [python]
+
       - id: linter
         name: flake8
         entry: poetry run python -m flake8 --ignore=E501,W503,E226 celebrity_recognition_ai tests
         language: system
         types: [python]
+
       - id: security
         name: bandit
         entry: poetry run python -m bandit -x tests -r celebrity_recognition_ai
