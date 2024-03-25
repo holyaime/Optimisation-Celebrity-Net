@@ -75,7 +75,7 @@ repos:
         language: system
         types: [python]
 
-      - id: security
+      - id: bandit
         name: bandit
         entry: poetry run python -m bandit -x tests -r celebrity_recognition_ai
         language: system

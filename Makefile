@@ -21,5 +21,5 @@ test: ##running test with pytest
 
 
 security-check: ##for security checking
-	poetry run pre-commit run security
+	poetry run pre-commit run bandit 
 	poetry run pre-commit run semgrep
