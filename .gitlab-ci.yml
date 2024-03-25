@@ -34,11 +34,18 @@ run_tests:
   script:
     - make test
 
+  cache:
+    paths:
+      - .venv
+
 security:
   stage: test
   image: $IMAGE
   script:
     - make security
+  cache:
+    paths:
+      - .venv
 
 sast:
   stage: security
