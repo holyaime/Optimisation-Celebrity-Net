@@ -19,12 +19,10 @@ quality_checks:
   image: datakori/poetry
 
   before_script:
-    - poetry install
     - source $(poetry env info --path)/bin/activate
-    - make quality
 
   script:
-    - pre-commit run --all-files
+    - make quality
 
 test:
   stage: test
@@ -32,9 +30,13 @@ test:
   script:
     - make test
 
+security:
+  stage: test
+  image: $IMAGE
+  script:
+    - make security
+
 gitlab_sast:
   stage: security
 include:
 - template: Security/SAST.gitlab-ci.yml
-
-security_tools:
