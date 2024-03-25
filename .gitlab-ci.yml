@@ -24,7 +24,7 @@ quality_checks:
   script:
     - make quality
 
-test:
+run_tests:
   stage: test
   image: $IMAGE
   script:
