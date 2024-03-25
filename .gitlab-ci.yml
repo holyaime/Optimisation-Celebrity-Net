@@ -18,9 +18,12 @@ quality_checks:
   stage: quality_check
   image: datakori/poetry
 
+  before_script:
+    - poetry config virtualenvs.in-project true
+
   script:
     - make quality
-      
+
   cache:
     paths:
       - .venv
