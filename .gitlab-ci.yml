@@ -18,9 +18,6 @@ quality_checks:
   stage: quality_check
   image: datakori/poetry
 
-  before_script:
-    - source $(poetry env info --path)/bin/activate
-
   script:
     - make quality
 
