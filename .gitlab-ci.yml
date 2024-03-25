@@ -6,8 +6,35 @@
 # Note that environment variables can be set in several places
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 stages:
-- test
-sast:
+  - quality_check
+  - test
+  - security
+
+variables:
+  PYTHON_VERSION: 3.11-slim
+  IMAGE: datakori/poetry
+
+quality_checks:
+  stage: quality_check
+  image: datakori/poetry
+
+  before_script:
+    - poetry install
+    - source $(poetry env info --path)/bin/activate
+    - make quality
+
+  script:
+    - pre-commit run --all-files
+
+test:
   stage: test
+  image: $IMAGE
+  script:
+    - make test
+
+gitlab_sast:
+  stage: security
 include:
 - template: Security/SAST.gitlab-ci.yml
+
+security_tools:
