@@ -7,7 +7,7 @@
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 
 include:
-  - project: 'ops/ci-templates'
+  - project: 'DATAKORI/ops/ci-templates'
     ref: 'chore/ci-template'
     file: 'pipeline.yml'
 
