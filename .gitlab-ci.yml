@@ -8,6 +8,5 @@
 
 include:
   - project: 'DATAKORI/ops/ci-templates'
-    ref: 'chore/ci-template'
     file: 'pipeline.yml'
 
