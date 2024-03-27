@@ -103,27 +103,25 @@ Cet élément facultatif indique simplement le contexte du commit. Il s’agit d
 - **`service/users`**: Modifications apportées au service de gestion des utilisateurs.
 - **`security`**: changements liés aux failles de sécurité.
 - **``compliance``**: modifications pour se conformer à la réglementation.
+- **`project/setup`**: Mise en place de l'environnement du projet.
 
 ##### PERIMETRE DATA [A MODIFIER]
 **Data-Related Scopes:**
-- **`data/acquisition`** : Scripts ou code liés à la collecte ou au scraping de données.
-- **`data/cleaning`**: activités de nettoyage, de prétraitement et de transformation des données.
-- **`data/augmentation`**: techniques utilisées pour étendre artificiellement l'ensemble de données.
+- **`data/ingestion`** : Scripts ou code liés à la collecte ou au scraping de données.
+- **`data/transformation`**: activités de nettoyage, de prétraitement et de transformation des données.
+- **`data/loading`**: sauvegarde des données.
+- **`data/activation`**: ajouter les données a des outils metiers
 - **`data/exploration`**: Analyse exploratoire des données (EDA) et ingénierie des fonctionnalités.
-- **`data/validation`**: Code pour la validation des données et la vérification des biais ou des erreurs.
+- **`data/quality`**: les méthodes mises en œuvre pour monitorer la qualite des données.
 
 **Model-Related Scopes:**
 - **`model/architecture`**: définition et construction de l'architecture du modèle (par exemple, CNN, RNN, Transformer).
 - **`model/training`**: code pour entraîner le modèle, y compris le réglage des hyperparamètres.
 - **`model/evaluation`**: code permettant d'évaluer les performances du modèle sur des métriques telles que l'exactitude, la précision, le rappel et le score F1.
-- **m`odel/deployment`**: Techniques et scripts pour déployer le modèle en production.
-- **`model/fine-tuning`**: processus d'affinement et d'amélioration d'un modèle pré-entraîné.
+- **`model/deployment`**: Techniques et scripts pour déployer le modèle en production.
+- **`model/loss_function`**: Implémentation et configuration de fonctions de perte pour la formation.
+- **`model/optimizer`**: Sélection et configuration des optimiseurs pour la formation des modèles.
 
-**Training-Related Scopes:**
-- **`training/environment`**: Mise en place de l'environnement de formation, y compris les bibliothèques et les dépendances.
-- **`training/loss_function`**: Implémentation et configuration de fonctions de perte pour la formation.
-- **`training/optimizer`**: Sélection et configuration des optimiseurs pour la formation des modèles.
-- **`training/callbacks`**: mise en œuvre de rappels personnalisés pour la surveillance ou l'arrêt anticipé pendant la formation.
 #### <font color="#366092">Le sujet  </font>
 Le sujet décrit succinctement la modification. Certaines règles doivent être respectées :
 - Le sujet doit faire au plus 72 caractères;
