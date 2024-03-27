@@ -1,5 +1,4 @@
-#Makefile
-
+.ONESHELL:
 
 .PHONY: quality test security-check
 
