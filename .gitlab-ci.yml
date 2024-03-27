@@ -5,49 +5,9 @@
 # Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
 # Note that environment variables can be set in several places
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
-stages:
-  - quality_check
-  - test
-  - security
 
-variables:
-  IMAGE: datakori/poetry
-  POETRY_VIRTUALENVS_PATH: $CI_PROJECT_DIR/venv
-
-quality_checks:
-  stage: quality_check
-  image: datakori/poetry
-
-  script:
-    - make quality
-
-  cache:
-    paths:
-      - .venv
-
-run_tests:
-  stage: test
-  image: $IMAGE
-
-  script:
-    - make test
-
-  cache:
-    paths:
-      - .venv
-
-security:
-  stage: test
-  image: $IMAGE
-
-  script:
-    - make security
-
-  cache:
-    paths:
-      - .venv
-
-sast:
-  stage: security
 include:
-- template: Security/SAST.gitlab-ci.yml
+  - project: 'datakori/ops'
+    ref: 'chore/ci-template'
+    file: 'pipeline.yml'
+
