@@ -11,3 +11,6 @@ include:
     ref: 'chore/ci-template'
     file: 'pipeline.yml'
 
+quality_checks:
+  variables:
+    IMAGE: 'TEST/TEST'
