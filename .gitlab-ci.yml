@@ -12,7 +12,7 @@ stages:
 - build
 
 variables:
-  IMAGE_NAME: celebrity-ai
+  IMAGE_NAME: datakori/celebrity-ai
   IMAGE_TAG: v1.0.0
   LATEST: latest
 
