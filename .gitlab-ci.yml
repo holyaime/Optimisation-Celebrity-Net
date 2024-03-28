@@ -67,3 +67,21 @@ deploy-to-stage:
   environment:
     name: staging
     url: http://165.22.194.104
+
+
+# deploy to sankara
+deploy-to-prod:
+  stage: production
+  script:
+    - echo "Deploy to production server"
+    - chmod og= $ID_RSA
+    - apk update && apk add openssh-client
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "echo $REGISTRY_ACCESS_KEY | docker login -u $REGISTRY_USER --password-stdin"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull $IMAGE_NAME:$LATEST"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f $APPLICATION_NAME || true"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p $SERVER_PORT:$CONTAINER_PORT --name $APPLICATION_NAME $IMAGE_NAME:$LATEST"
+
+  environment:
+    name: production
+    url: http://164.90.165.129
+  when: manual
