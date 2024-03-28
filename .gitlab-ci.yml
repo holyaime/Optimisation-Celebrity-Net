@@ -55,8 +55,8 @@ deploy-to-stage:
     SERVER_PORT: 80
   image: alpine:latest
   stage: staging
-  tags:
-      - deployment
+#  tags:
+#      - deployment
   script:
       - chmod og= $ID_RSA
       - apk update && apk add openssh-client
