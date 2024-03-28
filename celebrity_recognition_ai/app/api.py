@@ -15,7 +15,7 @@ def allowed_file(filename):
 
 @app.route("/")
 def home():
-    return "Hello"
+    return render_template("index.html")
 
 
 @app.route("/predict", methods=["POST"])
@@ -23,6 +23,9 @@ def render_predict():
 
     try:
         file = request.files["file"]
+
+        if file:
+            redirect("/")
 
         if file and allowed_file(file.filename):
             return render_template("predict.html")

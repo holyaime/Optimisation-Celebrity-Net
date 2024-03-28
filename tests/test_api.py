@@ -14,3 +14,8 @@ def client():
 def test_home(client):
     response = client.get("/")
     assert response.status_code == 200
+
+
+def test_predict(client):
+    response = client.post("/predict")
+    assert response.status_code == 400
