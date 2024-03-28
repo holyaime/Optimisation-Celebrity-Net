@@ -43,6 +43,7 @@ repos:
         name: no-commit-to-branch
         entry: no-commit-to-branch
         language: system
+        pass_filenames: false
         types: [python]
 
       - id: check-added-large-files
