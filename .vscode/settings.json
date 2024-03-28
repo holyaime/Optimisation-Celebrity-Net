@@ -1,5 +1,0 @@
-{
-    "python.analysis.extraPaths": [
-        "./celebrity_recognition_ai/app"
-    ]
-}
