@@ -7,7 +7,7 @@ repos:
         name: check-yaml
         entry: check-yaml
         language: system
-        types: [python]
+        types: [yaml]
 
       - id: trailing-whitespace-fixer
         name: trailing-whitespace-fixer
