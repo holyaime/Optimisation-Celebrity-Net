@@ -51,8 +51,8 @@ build_prod_image:
   after_script:
     - docker logout
 
-  only:
-    - main
+#  only:
+#    - main
 
 build_dev_image:
   extends: build_prod_image
