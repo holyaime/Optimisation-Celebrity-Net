@@ -121,6 +121,8 @@ Cet élément facultatif indique simplement le contexte du commit. Il s’agit d
 - **`model/deployment`**: Techniques et scripts pour déployer le modèle en production.
 - **`model/loss_function`**: Implémentation et configuration de fonctions de perte pour la formation.
 - **`model/optimizer`**: Sélection et configuration des optimiseurs pour la formation des modèles.
+- **`model/data`**: Tout traitement de données durant la modélisation.
+
 
 #### <font color="#366092">Le sujet  </font>
 Le sujet décrit succinctement la modification. Certaines règles doivent être respectées :
