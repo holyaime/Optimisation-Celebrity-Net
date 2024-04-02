@@ -55,8 +55,8 @@ build_prod_image:
   after_script:
     - docker logout
 
-  only:
-    - main
+#  only:
+#    - main
 
 build_dev_image:
   extends:
@@ -65,9 +65,11 @@ build_dev_image:
 
   script:
     - docker build -t $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA .
+    - docker tag $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA $IMAGE_NAME:DEV-latest
     - docker push $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA
-  only:
-    - development
+    - docker push $IMAGE_NAME:DEV-latest
+#  only:
+#    - development
 
 
 # deploy to yann
@@ -81,9 +83,9 @@ deploy-to-stage:
     - chmod og= $ID_RSA
     - apk update && apk add openssh-client
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "echo $REGISTRY_ACCESS_KEY | docker login -u $REGISTRY_USER --password-stdin"
-    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull $IMAGE_NAME:$LATEST"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull $IMAGE_NAME:DEV-latest"
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f $APPLICATION_NAME || true"
-    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p $SERVER_PORT:$CONTAINER_PORT --name $APPLICATION_NAME $IMAGE_NAME:$LATEST"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p $SERVER_PORT:$CONTAINER_PORT --name $APPLICATION_NAME $IMAGE_NAME:DEV-latest"
 
   environment:
     name: development
