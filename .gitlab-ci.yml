@@ -10,7 +10,7 @@ stages:
 - test
 - security
 - build
-- staging
+- development
 - production
 
 variables:
@@ -52,7 +52,7 @@ build_image:
 # deploy to yann
 deploy-to-stage:
   image: alpine:latest
-  stage: staging
+  stage: development
 #  tags:
 #      - deployment
   script:
@@ -63,7 +63,7 @@ deploy-to-stage:
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f $APPLICATION_NAME || true"
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p $SERVER_PORT:$CONTAINER_PORT --name $APPLICATION_NAME $IMAGE_NAME:$LATEST"
   environment:
-    name: staging
+    name: development
     url: http://165.22.194.104
 
 
