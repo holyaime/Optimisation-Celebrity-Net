@@ -27,6 +27,10 @@ include:
   - project: 'DATAKORI/ops/ci-templates'
     file: 'pipeline.yml'
 
+# refrain download of cache for our default job in upstream
+default:
+  cache: []
+
 build_prod_image:
   stage: build
   image: docker:26.0.0-rc2-cli
