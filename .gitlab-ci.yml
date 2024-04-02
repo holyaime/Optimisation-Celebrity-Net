@@ -55,8 +55,8 @@ build_prod_image:
   after_script:
     - docker logout
 
-#  only:
-#    - main
+  only:
+    - main
 
 build_dev_image:
   extends:
@@ -68,8 +68,8 @@ build_dev_image:
     - docker tag $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA $IMAGE_NAME:DEV-latest
     - docker push $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA
     - docker push $IMAGE_NAME:DEV-latest
-#  only:
-#    - development
+  only:
+    - development
 
 
 # deploy to yann
@@ -91,9 +91,9 @@ deploy-to-stage:
     name: development
     url: $DEV_SERVER_ADDRESS
 
-#  only:
-#    - development
-#    - main
+  only:
+    - development
+    - main
 
 
 # deploy to sankara
@@ -115,5 +115,5 @@ deploy-to-prod:
     url: $PROD_SERVER_ADDRESS
 
   when: manual
-#  only:
-#  - main
+  only:
+  - main
