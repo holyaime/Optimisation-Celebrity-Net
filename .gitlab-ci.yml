@@ -28,13 +28,13 @@ include:
     file: 'pipeline.yml'
 
 # refrain download of cache for our default job in upstream
-default:
+.no_previous_cache:
   cache: []
 
 build_prod_image:
   stage: build
   image: docker:26.0.0-rc2-cli
-
+  extends: .no_previous_cache
   services:
     - docker:26.0.0-rc2-dind
 
@@ -59,7 +59,10 @@ build_prod_image:
 #    - main
 
 build_dev_image:
-  extends: build_prod_image
+  extends:
+  - build_prod_image
+  - .no_previous_cache
+
   script:
     - docker build -t $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA .
     - docker push $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA
@@ -71,6 +74,7 @@ build_dev_image:
 deploy-to-stage:
   image: alpine:latest
   stage: development
+  extends: .no_previous_cache
 #  tags:
 #      - deployment
   script:
@@ -94,6 +98,7 @@ deploy-to-stage:
 deploy-to-prod:
   image: alpine:latest
   stage: production
+  extends: .no_previous_cache
   script:
     - echo "Deploy to production server"
     - chmod og= $ID_RSA_PROD
