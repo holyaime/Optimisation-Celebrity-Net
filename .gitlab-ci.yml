@@ -85,5 +85,4 @@ deploy-to-prod:
   environment:
     name: production
     url: $PROD_SERVER_ADDRESS
-
   when: manual
