@@ -51,6 +51,10 @@ build_image:
   after_script:
     - docker logout
 
+  only:
+    - development
+    - main
+
 # deploy to yann
 deploy-to-stage:
   image: alpine:latest
@@ -64,9 +68,14 @@ deploy-to-stage:
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull $IMAGE_NAME:$LATEST"
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f $APPLICATION_NAME || true"
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p $SERVER_PORT:$CONTAINER_PORT --name $APPLICATION_NAME $IMAGE_NAME:$LATEST"
+
   environment:
     name: development
     url: $DEV_SERVER_ADDRESS
+
+  only:
+    - development
+    - main
 
 
 # deploy to sankara
@@ -85,4 +94,7 @@ deploy-to-prod:
   environment:
     name: production
     url: $PROD_SERVER_ADDRESS
+
   when: manual
+  only:
+  - main
