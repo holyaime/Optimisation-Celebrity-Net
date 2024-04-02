@@ -71,6 +71,7 @@ deploy-to-stage:
 
 # deploy to sankara
 deploy-to-prod:
+
   image: alpine:latest
   stage: production
   script:
