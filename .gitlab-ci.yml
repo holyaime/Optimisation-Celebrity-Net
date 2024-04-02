@@ -91,9 +91,9 @@ deploy-to-stage:
     name: development
     url: $DEV_SERVER_ADDRESS
 
-  only:
-    - development
-    - main
+#  only:
+#    - development
+#    - main
 
 
 # deploy to sankara
@@ -115,5 +115,5 @@ deploy-to-prod:
     url: $PROD_SERVER_ADDRESS
 
   when: manual
-  only:
-  - main
+#  only:
+#  - main
