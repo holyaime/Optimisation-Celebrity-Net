@@ -10,7 +10,7 @@ stages:
 - test
 - security
 - build
-- development
+- develop
 - production
 
 variables:
@@ -69,13 +69,13 @@ build_dev_image:
     - docker push $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA
     - docker push $IMAGE_NAME:DEV-latest
   only:
-    - development
+    - develop
 
 
 # deploy to yann
 deploy-to-stage:
   image: alpine:latest
-  stage: development
+  stage: develop
   extends: .no_previous_cache
 #  tags:
 #      - deployment
@@ -88,11 +88,11 @@ deploy-to-stage:
     - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p $SERVER_PORT:$CONTAINER_PORT --name $APPLICATION_NAME $IMAGE_NAME:DEV-latest"
 
   environment:
-    name: development
+    name: develop
     url: $DEV_SERVER_ADDRESS
 
   only:
-    - development
+    - develop
     - main
 
 
