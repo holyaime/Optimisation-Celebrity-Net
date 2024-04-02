@@ -57,9 +57,9 @@ build_prod_image:
 build_dev_image:
   extends: build_prod_image
   script:
-    - docker build -t $IMAGE_NAME:$CI_COMMIT_BRANCH-$CI_PIPELINE_ID-CT-$CI_COMMIT_REF_SLUG .
-    - docker tag $IMAGE_NAME:$CI_COMMIT_BRANCH-$CI_PIPELINE_ID-CT-$CI_COMMIT_REF_SLUG
-    - docker push $IMAGE_NAME:$CI_COMMIT_BRANCH-$CI_PIPELINE_ID-CT-$CI_COMMIT_REF_SLUG
+    - docker build -t $IMAGE_NAME:$CI_PIPELINE_ID-CT-$CI_COMMIT_SHORT_SHA .
+    - docker tag $IMAGE_NAME:$CI_PIPELINE_ID-CT-$CI_COMMIT_SHORT_SHA
+    - docker push $IMAGE_NAME:$CI_PIPELINE_ID-CT-$CI_COMMIT_SHORT_SHA
 #  only:
 #    - development
 
