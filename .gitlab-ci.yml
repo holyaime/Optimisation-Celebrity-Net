@@ -27,7 +27,7 @@ include:
   - project: 'DATAKORI/ops/ci-templates'
     file: 'pipeline.yml'
 
-build_image:
+build_prod_image:
   stage: build
   image: docker:26.0.0-rc2-cli
 
@@ -52,8 +52,17 @@ build_image:
     - docker logout
 
   only:
-    - development
     - main
+
+build_dev_image:
+  extends: build_prod_image
+  script:
+    - docker build -t $IMAGE_NAME:$CI_COMMIT_BRANCH-$CI_PIPELINE_ID-CT-$CI_COMMIT_REF_SLUG .
+    - docker tag $IMAGE_NAME:$CI_COMMIT_BRANCH-$CI_PIPELINE_ID-CT-$CI_COMMIT_REF_SLUG
+    - docker push $IMAGE_NAME:$CI_COMMIT_BRANCH-$CI_PIPELINE_ID-CT-$CI_COMMIT_REF_SLUG
+#  only:
+#    - development
+
 
 # deploy to yann
 deploy-to-stage:
