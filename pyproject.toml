@@ -6,7 +6,7 @@ authors = ["Béranger GUEDOU <beranger@datakori.tech>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.9"
 pre-commit = "^3.6.2"
 pre-commit-hooks = "^4.5.0"
 isort = "^5.13.2"
@@ -14,6 +14,10 @@ black = "^24.3.0"
 flake8 = "^7.0.0"
 semgrep = "^1.66.0"
 bandit = "^1.7.8"
+timm = "^0.9.16"
+jupyter = "^1.0.0"
+pillow = "^10.3.0"
+albumentations = "^1.4.3"
 
 
 [build-system]
