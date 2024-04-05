@@ -55,7 +55,6 @@ build_prod_image:
   after_script:
     - docker logout
 
-  when: manual
   only:
     - main
 
@@ -70,7 +69,6 @@ build_dev_image:
     - docker push $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA
     - docker push $IMAGE_NAME:DEV-latest
     
-  when: manual
   only:
     - develop
 
