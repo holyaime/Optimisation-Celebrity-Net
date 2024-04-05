@@ -26,3 +26,7 @@ test: poetry_install ##running test with pytest
 security: poetry_install ##for security checking
 	poetry run pre-commit run bandit 
 	poetry run pre-commit run semgrep
+
+
+pre-commit:
+	poetry run pre-commit run --all-files

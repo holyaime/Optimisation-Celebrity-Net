@@ -44,7 +44,6 @@ repos:
         entry: no-commit-to-branch
         pass_filenames: false
         language: system
-        pass_filenames: false
         types: [python]
 
       - id: check-added-large-files
@@ -73,7 +72,7 @@ repos:
       
       - id: test
         name: test
-        entry: poetry run python -m pytest -v
+        entry: poetry run python -m pytest tests
         language: system
         types: [python]
 
