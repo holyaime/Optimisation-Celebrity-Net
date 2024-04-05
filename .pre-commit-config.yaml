@@ -44,6 +44,7 @@ repos:
         entry: no-commit-to-branch
         pass_filenames: false
         language: system
+        pass_filenames: false
         types: [python]
 
       - id: check-added-large-files
