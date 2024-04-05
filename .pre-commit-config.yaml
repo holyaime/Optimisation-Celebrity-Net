@@ -42,6 +42,7 @@ repos:
       - id: no-commit-to-branch
         name: no-commit-to-branch
         entry: no-commit-to-branch
+        pass_filenames: false
         language: system
         pass_filenames: false
         types: [python]
