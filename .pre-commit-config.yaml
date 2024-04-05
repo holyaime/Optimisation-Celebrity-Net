@@ -7,7 +7,7 @@ repos:
         name: check-yaml
         entry: check-yaml
         language: system
-        types: [python]
+        types: [yaml]
 
       - id: trailing-whitespace-fixer
         name: trailing-whitespace-fixer
@@ -42,6 +42,7 @@ repos:
       - id: no-commit-to-branch
         name: no-commit-to-branch
         entry: no-commit-to-branch
+        pass_filenames: false
         language: system
         types: [python]
 
@@ -51,13 +52,13 @@ repos:
         language: system
         types: [python]
 
-      - id: code formater
+      - id: code-formater
         name: black
         entry: poetry run python -m black celebrity_recognition_ai tests
         language: system
         types: [python]
         
-      - id: sort imports
+      - id: sort-imports
         name: isort
         entry: poetry run python -m isort celebrity_recognition_ai tests
         language: system
@@ -68,8 +69,14 @@ repos:
         entry: poetry run python -m flake8 --ignore=E501,W503,E226 celebrity_recognition_ai tests
         language: system
         types: [python]
+      
+      - id: test
+        name: test
+        entry: poetry run python -m pytest tests
+        language: system
+        types: [python]
 
-      - id: security
+      - id: bandit
         name: bandit
         entry: poetry run python -m bandit -x tests -r celebrity_recognition_ai
         language: system
