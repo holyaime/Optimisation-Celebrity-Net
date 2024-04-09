@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 
-import mlflow
+import mlflow  # noqa: TID251
 import numpy as np
 import torch
 
@@ -10,8 +10,6 @@ def one_epoch_training(dataloader, model, criterion, optimizer, device, breakpoi
     """ """
     model.train()
     train_loss = 0.0
-    correct_predictions = 0
-    total_samples = 0
     for i, batch in enumerate(dataloader):
         if i == breakpoint:
             break
@@ -30,8 +28,8 @@ def one_epoch_training(dataloader, model, criterion, optimizer, device, breakpoi
         optimizer.step()
         # Statistics
         train_loss += loss.item()
-  
-    return train_loss/len(dataloader)
+
+    return train_loss / len(dataloader)
 
 
 def one_epoch_validation(dataloader, model, criterion, device, breakpoint=4):
@@ -53,13 +51,9 @@ def one_epoch_validation(dataloader, model, criterion, device, breakpoint=4):
             loss = criterion(outputs, labels)
             # Statistics
             val_loss += loss.item()
-            # Compute of precision
-            _,predicted = torch.max(outputs,1)
-            correct_predictions += (predicted == labels).sum().item()
-            total_samples += labels.size(0)
-        average_val_loss = val_loss/len(dataloader)
-        accuracy =  correct_predictions /total_samples
-    return average_val_loss, accuracy
+
+        average_val_loss = val_loss / len(dataloader)
+    return average_val_loss
 
 
 def all_epochs_training_and_validation(

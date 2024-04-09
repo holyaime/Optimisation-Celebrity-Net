@@ -23,6 +23,7 @@ pillow = "^10.3.0"
 albumentations = "^1.4.3"
 mlflow = "^2.11.3"
 notebook = "^7.1.2"
+rich = "^13.7.1"
 
 
 [build-system]

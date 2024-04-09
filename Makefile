@@ -20,7 +20,7 @@ quality: poetry_install ##for checking code quality
 
 
 test: poetry_install ##running test with pytest
-	poetry run pytest -v
+	poetry run pre-commit run test
 
 
 security: poetry_install ##for security checking
@@ -28,5 +28,3 @@ security: poetry_install ##for security checking
 	poetry run pre-commit run semgrep
 
 
-pre-commit:
-	poetry run pre-commit run --all-files

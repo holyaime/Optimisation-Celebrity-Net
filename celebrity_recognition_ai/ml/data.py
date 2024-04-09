@@ -79,5 +79,4 @@ class CelebrityDataset(torch.utils.data.Dataset):
         return X, y
 
 
-
-#xxxxx
+# xxxxx
