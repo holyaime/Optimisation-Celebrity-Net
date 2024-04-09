@@ -15,7 +15,7 @@ quality: poetry_install ##for checking code quality
 	poetry run pre-commit run no-commit-to-branch --all-files
 	poetry run pre-commit run check-added-large-files --all-files
 	poetry run pre-commit run code-formater --all-files
-	poetry run pre-commit run sort-imports--all-files
+	poetry run pre-commit run sort-imports --all-files
 	poetry run pre-commit run linter --all-files
 
 
