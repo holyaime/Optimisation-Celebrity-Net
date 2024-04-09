@@ -92,10 +92,12 @@ deploy-to-stage:
     name: develop
     url: $DEV_SERVER_ADDRESS
 
-  when: manual
-  only:
-    - develop
-    - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: always
+    
+    - if: $CI_COMMIT_BRANCH == "develop"
+      when: manual
 
 
 # deploy to sankara
