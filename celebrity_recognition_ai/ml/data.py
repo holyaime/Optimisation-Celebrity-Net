@@ -77,3 +77,7 @@ class CelebrityDataset(torch.utils.data.Dataset):
         y = y.float()
 
         return X, y
+
+
+
+#xxxxx
