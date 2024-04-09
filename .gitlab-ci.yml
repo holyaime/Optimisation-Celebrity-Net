@@ -68,6 +68,7 @@ build_dev_image:
     - docker tag $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA $IMAGE_NAME:DEV-latest
     - docker push $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA
     - docker push $IMAGE_NAME:DEV-latest
+    
   only:
     - develop
 
@@ -91,9 +92,12 @@ deploy-to-stage:
     name: develop
     url: $DEV_SERVER_ADDRESS
 
-  only:
-    - develop
-    - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: always
+    
+    - if: $CI_COMMIT_BRANCH == "develop"
+      when: manual
 
 
 # deploy to sankara
