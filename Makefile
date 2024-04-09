@@ -1,6 +1,6 @@
 .ONESHELL:
 
-.PHONY: quality test security-check
+.PHONY: quality test security-check dev
 
 poetry_install:
 	poetry install
@@ -26,5 +26,8 @@ test: poetry_install ##running test with pytest
 security: poetry_install ##for security checking
 	poetry run pre-commit run bandit 
 	poetry run pre-commit run semgrep
+
+dev: poetry_install
+	poetry run pre-commit install
 
 
