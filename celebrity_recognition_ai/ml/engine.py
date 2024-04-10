@@ -6,7 +6,7 @@ import numpy as np
 import torch
 
 
-def one_epoch_training(dataloader, model, criterion, optimizer, device, breakpoint=20):
+def one_epoch_training(dataloader, model, criterion, optimizer, device, breakpoint=5):
     """ """
     model.train()
     train_loss = 0.0
