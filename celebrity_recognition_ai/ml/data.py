@@ -13,15 +13,16 @@ def get_train_and_validation_images_path(base_path, categories, percentage_train
 
     train_images_absolute_paths = []
     validation_images_absolute_paths = []
-    # categories = os.listdir(base_path)
 
     for folder in categories:
         path = os.path.join(base_path, folder)
-        # print(folder)
         category_data = os.listdir(path)
-        category_images_path = [
-            os.path.join(path, element) for element in category_data
-        ]
+        category_images_path = []
+        for element in category_data:
+            image_path = os.path.join(path, element)
+            if image_path.endswith(".jpg"):
+                category_images_path.append(image_path)
+
         random.shuffle(category_images_path)
         nb_images_per_category = int(percentage_train * len(category_images_path))
         category_images_path_train = category_images_path[:nb_images_per_category]
@@ -29,7 +30,6 @@ def get_train_and_validation_images_path(base_path, categories, percentage_train
         train_images_absolute_paths.extend(category_images_path_train)
         validation_images_absolute_paths.extend(category_images_path_validation)
 
-    # return categories, train_images_absolute_paths, validation_images_absolute_paths
     return train_images_absolute_paths, validation_images_absolute_paths
 
 
@@ -53,27 +53,35 @@ class CelebrityDataset(torch.utils.data.Dataset):
         # Select sample
         image_path = self.images_absolute_paths[index]
         # Load data and get label
-        X = Image.open(image_path)
+        X = Image.open(image_path).convert("RGB")
         X = np.array(X)
         if self.train:
             # Augmentations while training
             self.transforms = A.Compose(
                 [
-                    A.Resize(width=224, height=224),
-                    # A.RandomCrop(width=224, height=224),
+                    A.SmallestMaxSize(max_size=256),
+                    A.RandomCrop(width=224, height=224),
+                    A.ShiftScaleRotate(
+                        shift_limit=0.05, scale_limit=0.05, rotate_limit=15, p=0.5
+                    ),
+                    A.PixelDropout(p=0.3),
                     A.HorizontalFlip(p=0.5),
+                    A.VerticalFlip(p=0.5),
                     A.RandomBrightnessContrast(p=0.2),
                 ]
             )
         else:
             self.transforms = A.Compose(
-                [A.Resize(width=224, height=224)]  # Achanger plus tard
+                [
+                    A.SmallestMaxSize(max_size=256),
+                    A.CenterCrop(height=224, width=224),
+                ]  # Achanger plus tard
             )
 
         X = self.transforms(image=X)["image"]
+
         X = torch.from_numpy(X).permute(2, 0, 1)
         X = X.float()
-        # print("Ediiiiiééé ==> ", X.shape, type(X))
 
         # Labels
         label = image_path.split("/")[-2]
@@ -82,6 +90,3 @@ class CelebrityDataset(torch.utils.data.Dataset):
         y = y.float()
 
         return X, y
-
-
-# xxxxx

@@ -21,16 +21,16 @@ training_parser.add_argument(
     "--batch-size", type=int, default=16, help="Batch size for training and validation."
 )
 training_parser.add_argument(
-    "--workers", type=int, default=1, help="Number of cpu cores for multiprocessing"
+    "--workers", type=int, default=8, help="Number of cpu cores for multiprocessing"
 )
 training_parser.add_argument(
     "--early-stopping",
     type=int,
-    default=5,
+    default=15,
     help="Number of epochs to wait before stopping the training if no improvement noticed.",
 )
 training_parser.add_argument(
-    "--nb-epochs", type=int, default=20, help="Numbers of epochs to train."
+    "--nb-epochs", type=int, default=200, help="Numbers of epochs to train."
 )
 training_parser.add_argument(
     "--percentage", type=float, default=0.1, help="Validation dataset size."
@@ -82,7 +82,6 @@ if __name__ == "__main__":
     else:
         device = torch.device("cpu")
 
-
     # Datasets
 
     categories = [
@@ -98,7 +97,6 @@ if __name__ == "__main__":
             datapath, categories, percentage_train=0.8
         )
     )
-
 
     train_dataset = data.CelebrityDataset(
         train_images_absolute_paths, categories, train=True
@@ -134,6 +132,6 @@ if __name__ == "__main__":
         device,
         nb_epochs=nb_epochs,
         early_stopping=early_stopping,
-        model_name="basmatinet.pth",
+        model_name="celebritynet.pth",
         breakpoint=None,
     )

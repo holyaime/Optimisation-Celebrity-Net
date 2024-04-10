@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 
-import mlflow  # noqa: TID251
+import mlflow
 import numpy as np
 import torch
 
@@ -26,6 +26,8 @@ def one_epoch_training(dataloader, model, criterion, optimizer, device, breakpoi
         loss.backward()
         #  Optimize: update the weigths
         optimizer.step()
+        # Decay LR
+        # scheduler.step()
         # Statistics
         train_loss += loss.item()
 
@@ -66,7 +68,7 @@ def all_epochs_training_and_validation(
     device,
     nb_epochs=20,
     early_stopping=5,
-    model_name="basmatinet.pth",
+    model_name="trained-model.pth",
     breakpoint=2,
 ):
     """ """
@@ -100,7 +102,7 @@ def all_epochs_training_and_validation(
             mlflow.log_metric("train_loss", train_loss, epoch + 1)
             mlflow.log_metric("val_loss", val_loss, epoch + 1)
             # Print metrics
-            logger.debug(
+            logger.info(
                 "Epoch:{}, Train Loss: {}  Val Loss: {} ".format(
                     epoch + 1, round(train_loss, 8), round(val_loss, 8)
                 )
@@ -110,10 +112,12 @@ def all_epochs_training_and_validation(
                 best_val_loss = val_loss
                 counter = 0
                 # Save the model
-                save_path = os.path.join("basmatinet/app", model_name)
+                save_path = os.path.join(
+                    "celebrity_recognition_ai/app/trained-models/", model_name
+                )
                 torch.save(model.state_dict(), save_path)
             else:
                 counter += 1
             if counter == early_stopping:
-                logger.debug("======== EARLY STOPPING ========")
+                logger.info("======== EARLY STOPPING ========")
                 break

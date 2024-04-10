@@ -53,7 +53,7 @@ logging_config = {
     "loggers": {
         "root": {
             "handlers": ["console", "info", "error", "critical"],
-            "level": logging.DEBUG,
+            "level": logging.INFO,
             "propagate": True,
         },
     },
