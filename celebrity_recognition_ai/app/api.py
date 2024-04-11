@@ -1,39 +1,33 @@
-# -*- coding: utf-8 -*-
 import os
+from flask import Flask, jsonify, make_response, request
+from celebrity_recognition_ai.ml.models import CelebrityNet
+from celebrity_recognition_ai.app.utils import CelebrityPrediction
 
-from flask import Flask, redirect, render_template, request
-from werkzeug.exceptions import RequestEntityTooLarge
+
+MODEL_PATH = 'celebrity_recognition_ai/app/trained-models/celebritynet.pth'
+CONFIG_PATH = 'celebrity_recognition_ai/configs/labels.yaml'
+
+
+model_arch = CelebrityNet(pretrained=False)
+predictor = CelebrityPrediction(model_arch=model_arch,
+                                model_path=MODEL_PATH,
+                                config_path=CONFIG_PATH)
 
 app = Flask(__name__)
-app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024
-app.secret_key = os.urandom(24)
+
+@app.route('/celebrity/predict', methods=['POST'])
+def prediction_pipeline():
+    # Get the image in base 64 and decode it
+    payload = request.form.to_dict(flat=False)
+    image_b64 = payload['image'][0]
+    # Pass it through the inference pipeline
+    response = predictor.inference_pipeline(image_b64)
+    return make_response(jsonify(response))
+
+@app.route('/celebrity/healthcheck', methods=['GET'])
+def healthcheck():
+    return 'Hello I am well !'
 
 
-def allowed_file(filename):
-    return os.path.splitext(filename)[1] in [".png", ".jpg", ".jpeg"]
-
-
-@app.route("/")
-def home():
-    return render_template("index.html")
-
-
-@app.route("/predict", methods=["POST"])
-def render_predict():
-
-    try:
-        file = request.files["file"]
-
-        if file:
-            redirect("/")
-
-        if file and allowed_file(file.filename):
-            return render_template("predict.html")
-    except RequestEntityTooLarge:
-        return "File is larger than the 5MB limit."
-
-    return redirect("/")
-
-
-if __name__ == "__main__":
-    app.run(debug=False)
+if __name__ == '__main__':
+    app.run(debug=True, port=5001)

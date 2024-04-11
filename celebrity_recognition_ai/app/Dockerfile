@@ -1,13 +1,17 @@
-FROM python:3.12-slim
-
-WORKDIR /usr/src/app
-
-COPY requirements.txt ./
+FROM --platform=linux/amd64 python:3.6-slim
+ARG MODEL
+ENV MODEL=${MODEL}
+COPY basmatinet/app/requirements.txt /tmp
 RUN python -m pip install --upgrade pip && \
-pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir -r /tmp/requirements.txt
 
-COPY . .
+RUN groupadd -g 1000 mlgroup && useradd -u 1000 -g mlgroup mluser
+RUN mkdir -p /usr/src/app && chown mluser:mlgroup /usr/src/app
+USER mluser:mlgroup
+WORKDIR /usr/src/app
+COPY --chown=mluser:mlgroup basmatinet/app/api_utils.py basmatinet/app/api.py \
+    basmatinet/app/${MODEL} basmatinet/app/app_config.yaml \
+    basmatinet/app/models.py ./
 
-EXPOSE 5000
-
-CMD ["gunicorn", "--bind", ":5000", "api:app"]
+EXPOSE 5001
+CMD ["gunicorn", "--bind", ":5001", "api:app"]

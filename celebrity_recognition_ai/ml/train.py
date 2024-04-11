@@ -3,6 +3,7 @@ import argparse
 import logging
 
 import torch
+import yaml
 from rich.logging import RichHandler
 
 from celebrity_recognition_ai.ml import data, engine, logging_config, models
@@ -37,6 +38,10 @@ training_parser.add_argument(
 )
 training_parser.add_argument("--acceleration", action="store_true", help="If True GPU")
 
+training_parser.add_argument(
+    "--config-path", type=str, default="celebrity_recognition_ai/configs/labels.yaml", help="Path to the yaml file where labels are."
+)
+
 if __name__ == "__main__":
     args = training_parser.parse_args()
 
@@ -47,6 +52,7 @@ if __name__ == "__main__":
     early_stopping = args.early_stopping
     nb_epochs = args.nb_epochs
     percentage = args.percentage
+    config_path = args.config_path
 
     # Checking if parameters are valid
     if (nb_epochs is None) or (nb_epochs <= 0):
@@ -84,14 +90,10 @@ if __name__ == "__main__":
 
     # Datasets
 
-    categories = [
-        "alassane-dramane-ouattara",
-        "arafat-dj",
-        "didi-b",
-        "didier-drogba",
-        "henri-konan-bedie",
-        "laurent-gbagbo",
-    ]
+    with open(config_path, 'r') as file:
+        content = yaml.safe_load(file)
+        categories = content['categories']
+
     (train_images_absolute_paths, validation_images_absolute_paths) = (
         data.get_train_and_validation_images_path(
             datapath, categories, percentage_train=0.8
