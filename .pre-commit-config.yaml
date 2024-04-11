@@ -75,6 +75,12 @@ repos:
         entry: poetry run python -m pytest tests
         language: system
         types: [python]
+      
+      - id: my_py
+        name: my_py
+        entry: poetry run python -m mypy
+        language: system
+        types: [python]
 
       - id: bandit
         name: bandit
