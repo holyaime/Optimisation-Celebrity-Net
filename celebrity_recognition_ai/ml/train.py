@@ -39,7 +39,10 @@ training_parser.add_argument(
 training_parser.add_argument("--acceleration", action="store_true", help="If True GPU")
 
 training_parser.add_argument(
-    "--config-path", type=str, default="celebrity_recognition_ai/configs/labels.yaml", help="Path to the yaml file where labels are."
+    "--config-path",
+    type=str,
+    default="celebrity_recognition_ai/configs/labels.yaml",
+    help="Path to the yaml file where labels are.",
 )
 
 if __name__ == "__main__":
@@ -90,9 +93,9 @@ if __name__ == "__main__":
 
     # Datasets
 
-    with open(config_path, 'r') as file:
+    with open(config_path, "r") as file:
         content = yaml.safe_load(file)
-        categories = content['categories']
+        categories = content["categories"]
 
     (train_images_absolute_paths, validation_images_absolute_paths) = (
         data.get_train_and_validation_images_path(

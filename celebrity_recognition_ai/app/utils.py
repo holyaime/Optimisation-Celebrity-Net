@@ -1,15 +1,16 @@
+# -*- coding: utf-8 -*-
 import base64
 import io
-import yaml
-from PIL import Image
+
 import albumentations as A
 import numpy as np
 import torch
 import torch.nn.functional as F
-from flask import Flask, jsonify, make_response, request
+import yaml
+from PIL import Image
 
 
-class CelebrityPrediction():
+class CelebrityPrediction:
 
     def __init__(self, model_arch, model_path, config_path):
         # Load the model
@@ -19,26 +20,26 @@ class CelebrityPrediction():
 
         # Inference image transformations
         self.transforms = A.Compose(
-                [
-                    A.SmallestMaxSize(max_size=256),
-                    A.CenterCrop(height=224, width=224),
-                ] 
-            )
+            [
+                A.SmallestMaxSize(max_size=256),
+                A.CenterCrop(height=224, width=224),
+            ]
+        )
 
     @property
     def model(self):
-        self.model_arch.load_state_dict(torch.load(
-            self.model_path, map_location=torch.device('cpu')))
+        self.model_arch.load_state_dict(
+            torch.load(self.model_path, map_location=torch.device("cpu"))
+        )
         self.model_arch.eval()
         return self.model_arch
 
     @property
     def labels_map_reverse(self):
-        with open(self.config_path, 'r') as file:
+        with open(self.config_path, "r") as file:
             content = yaml.safe_load(file)
-        categories = content['categories']
+        categories = content["categories"]
         return {str(i): categories[i] for i in range(len(categories))}
-        
 
     def _load_image(self, image_b64):
         image_binary = base64.b64decode(image_b64)
@@ -49,7 +50,7 @@ class CelebrityPrediction():
 
     def _preprocess(self, image):
         X = np.asarray(image)
-        X = self.transforms(image=X)['image']
+        X = self.transforms(image=X)["image"]
         X = torch.from_numpy(X).permute(2, 0, 1).unsqueeze(0)
         X = X.float()
         return X
@@ -64,8 +65,7 @@ class CelebrityPrediction():
         return proba, index
 
     def _post_process(self, proba, index):
-        response = {'category': self.labels_map_reverse[index],
-                    'probability': proba}
+        response = {"category": self.labels_map_reverse[index], "probability": proba}
         return response
 
     def inference_pipeline(self, image_b64):
@@ -78,5 +78,3 @@ class CelebrityPrediction():
         # Post process the prediction and build a response
         response = self._post_process(proba, str(index))
         return response
-
-

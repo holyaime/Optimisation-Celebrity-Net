@@ -75,7 +75,7 @@ class CelebrityDataset(torch.utils.data.Dataset):
                 [
                     A.SmallestMaxSize(max_size=256),
                     A.CenterCrop(height=224, width=224),
-                ] 
+                ]
             )
 
         X = self.transforms(image=X)["image"]
