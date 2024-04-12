@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 
-import mlflow  # noqa: TID251
+import mlflow  # type: ignore
 import numpy as np
 import torch
 
