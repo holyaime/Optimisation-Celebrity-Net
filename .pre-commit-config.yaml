@@ -72,14 +72,16 @@ repos:
       
       - id: test
         name: test
-        entry: poetry run python -m pytest tests
+        entry: poetry run python -m pytest -s -q tests --disable-warnings
+        pass_filenames: false
         language: system
         types: [python]
       
       - id: my_py
         name: my_py
-        entry: poetry run python -m mypy
+        entry: poetry run python -m mypy --exclude for_mypy tests celebrity_recognition_ai/ml
         language: system
+        pass_filenames: false
         types: [python]
 
       - id: bandit

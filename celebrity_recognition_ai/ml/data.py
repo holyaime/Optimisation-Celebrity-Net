@@ -2,7 +2,7 @@
 import os
 import random
 
-import albumentations as A
+import albumentations as A  # type: ignore
 import numpy as np
 import torch
 import torch.nn.functional as F

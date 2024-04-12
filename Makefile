@@ -23,7 +23,7 @@ quality: poetry_install ##for checking code quality
 
 
 test: poetry_install ##running test with mypy and pytest
-	poetry run pre-commit run my_py
+	poetry run python -m mypy tests celebrity_recognition_ai/ml
 	poetry run pre-commit run test
 
 
