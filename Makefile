@@ -1,4 +1,9 @@
 .ONESHELL:
+# Variables
+# PATH_TO_DATASET := "/home/beranger/Downloads/Rice_Image_Dataset/"
+HOST_IP := "0.0.0.0"
+FILENAME := "/home/beranger/Téléchargements/celebrity-data/arafat-dj/307a3374-251d-4f0e-aede-b9983f0f5762.jpeg"
+PORT := 5001
 
 .PHONY: quality test security-check dev
 
@@ -30,3 +35,15 @@ security: poetry_install ##for security checking
 	poetry run pre-commit run bandit 
 	poetry run pre-commit run semgrep
 
+build:
+	poetry export -f requirements.txt --without dev --without test --without docs --without-hashes --without-urls -o requirements.txt
+	poetry build
+	docker build -t celebritynet --build-arg MODEL="celebritynet.pth" \
+	-f celebrity_recognition_ai/app/Dockerfile .
+	rm -rf dist
+	rm requirements.txt
+run:
+	docker run -d -p 5001:5001 celebritynet
+	
+predict:
+	python celebrity_recognition_ai/app/frontend.py --filename ${FILENAME} --host-ip ${HOST_IP} --port ${PORT}

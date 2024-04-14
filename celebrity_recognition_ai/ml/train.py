@@ -31,7 +31,7 @@ training_parser.add_argument(
     help="Number of epochs to wait before stopping the training if no improvement noticed.",
 )
 training_parser.add_argument(
-    "--nb-epochs", type=int, default=200, help="Numbers of epochs to train."
+    "--nb-epochs", type=int, default=350, help="Numbers of epochs to train."
 )
 training_parser.add_argument(
     "--percentage", type=float, default=0.1, help="Validation dataset size."
@@ -41,7 +41,7 @@ training_parser.add_argument("--acceleration", action="store_true", help="If Tru
 training_parser.add_argument(
     "--config-path",
     type=str,
-    default="celebrity_recognition_ai/configs/labels.yaml",
+    default="celebrity_recognition_ai/configs/celebrity-config.yaml",
     help="Path to the yaml file where labels are.",
 )
 
@@ -95,7 +95,7 @@ if __name__ == "__main__":
 
     with open(config_path, "r") as file:
         content = yaml.safe_load(file)
-        categories = content["categories"]
+        categories = content["transverse"]["categories"]
 
     (train_images_absolute_paths, validation_images_absolute_paths) = (
         data.get_train_and_validation_images_path(

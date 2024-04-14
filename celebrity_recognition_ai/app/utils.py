@@ -38,7 +38,7 @@ class CelebrityPrediction:
     def labels_map_reverse(self):
         with open(self.config_path, "r") as file:
             content = yaml.safe_load(file)
-        categories = content["categories"]
+        categories = content["transverse"]["categories"]
         return {str(i): categories[i] for i in range(len(categories))}
 
     def _load_image(self, image_b64):
@@ -69,6 +69,7 @@ class CelebrityPrediction:
         return response
 
     def inference_pipeline(self, image_b64):
+
         # Load the image
         image = self._load_image(image_b64)
         # Preprocess it

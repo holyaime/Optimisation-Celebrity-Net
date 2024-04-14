@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
+import os
+
 from flask import Flask, jsonify, make_response, request
 
 from celebrity_recognition_ai.app.utils import CelebrityPrediction
 from celebrity_recognition_ai.ml.models import CelebrityNet
 
-MODEL_PATH = "celebrity_recognition_ai/app/trained-models/celebritynet.pth"
-CONFIG_PATH = "celebrity_recognition_ai/configs/labels.yaml"
+MODEL_PATH = os.environ["MODEL"]
+# CONFIG_PATH = "celebrity_recognition_ai/configs/labels.yaml"
+CONFIG_PATH = "celebrity-config.yaml"
 
 
 model_arch = CelebrityNet(pretrained=False)
@@ -32,4 +35,4 @@ def healthcheck():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5001, host="0.0.0.0")

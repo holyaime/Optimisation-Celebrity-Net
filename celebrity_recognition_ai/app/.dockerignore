@@ -1,0 +1,7 @@
+**/Dockerfile
+**/*ipynb*
+**/__pycache__
+**/frontend.py
+**/.dockerignore
+**/k8s
+**/.venv
