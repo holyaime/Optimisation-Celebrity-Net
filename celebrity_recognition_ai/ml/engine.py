@@ -1,12 +1,23 @@
 # -*- coding: utf-8 -*-
+import logging
 import os
+from typing import Optional
 
 import mlflow  # type: ignore
 import numpy as np
 import torch
 
+from celebrity_recognition_ai.ml.models import CelebrityNet
 
-def one_epoch_training(dataloader, model, criterion, optimizer, device, breakpoint=5):
+
+def one_epoch_training(
+    dataloader: torch.utils.data.DataLoader,
+    model: CelebrityNet,
+    criterion: torch.nn.CrossEntropyLoss,
+    optimizer: torch.optim.SGD,
+    device: torch.device,
+    breakpoint: Optional[int] = 5,
+) -> float:
     """ """
     model.train()
     train_loss = 0.0
@@ -34,7 +45,13 @@ def one_epoch_training(dataloader, model, criterion, optimizer, device, breakpoi
     return train_loss / len(dataloader)
 
 
-def one_epoch_validation(dataloader, model, criterion, device, breakpoint=4):
+def one_epoch_validation(
+    dataloader: torch.utils.data.DataLoader,
+    model: CelebrityNet,
+    criterion: torch.nn.CrossEntropyLoss,
+    device: torch.device,
+    breakpoint: Optional[int] = 4,
+) -> float:
     """ """
 
     model.eval()
@@ -59,18 +76,18 @@ def one_epoch_validation(dataloader, model, criterion, device, breakpoint=4):
 
 
 def all_epochs_training_and_validation(
-    logger,
-    train_dataloader,
-    val_dataloader,
-    model,
-    criterion,
-    optimizer,
-    device,
-    nb_epochs=20,
-    early_stopping=5,
-    model_name="trained-model.pth",
-    breakpoint=2,
-):
+    logger: logging.Logger,
+    train_dataloader: torch.utils.data.DataLoader,
+    val_dataloader: torch.utils.data.DataLoader,
+    model: CelebrityNet,
+    criterion: torch.nn.CrossEntropyLoss,
+    optimizer: torch.optim.SGD,
+    device: torch.device,
+    nb_epochs: int = 20,
+    early_stopping: int = 5,
+    model_name: str = "trained-model.pth",
+    breakpoint: Optional[int] = 2,
+) -> None:
     """ """
     with mlflow.start_run():
         counter = 0

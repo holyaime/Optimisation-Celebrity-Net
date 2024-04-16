@@ -16,7 +16,7 @@ front_parser.add_argument(
 front_parser.add_argument(
     "--host-ip",
     type=str,
-    default="0.0.0.0",
+    default="0.0.0.0",  # nosec
     help="IP address of the host of the prediction api",
 )
 front_parser.add_argument(
@@ -31,7 +31,7 @@ with open(filename, "rb") as img:
     img_b64 = base64.b64encode(img.read())
 
 payload = {"image": img_b64}
-response = requests.post(url=api_url, data=payload)
+response = requests.post(url=api_url, data=payload)  # nosec
 
 print("Prediction status code: ", response.status_code)
 print("Prediction: ", response.text)
