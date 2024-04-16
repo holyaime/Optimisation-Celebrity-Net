@@ -36,7 +36,7 @@ security: poetry_install ##for security checking
 	poetry run pre-commit run semgrep
 
 build:
-	poetry export -f requirements.txt --without dev --without test --without docs --without-hashes --without-urls -o requirements.txt
+	poetry export -f requirements.txt --only main --without-hashes --without-urls -o requirements.txt
 	poetry build
 	docker build -t celebritynet --build-arg MODEL="celebritynet.pth" \
 	-f celebrity_recognition_ai/app/Dockerfile .
