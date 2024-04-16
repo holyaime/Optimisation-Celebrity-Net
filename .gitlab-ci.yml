@@ -6,9 +6,9 @@
 # Note that environment variables can be set in several places
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 stages:
-#- quality_check
-#- test
-#- security
+- quality_check
+- test
+- security
 - build
 - develop
 - production
@@ -23,9 +23,9 @@ variables:
   DEV_SERVER_ADDRESS: http://165.22.194.104
   PROD_SERVER_ADDRESS: http://164.90.165.129
 
-#include:
-#  - project: 'DATAKORI/ops/ci-templates'
-#    file: 'pipeline.yml'
+include:
+  - project: 'DATAKORI/ops/ci-templates'
+    file: 'pipeline.yml'
 
 # refrain download of cache for our default job in upstream
 .no_previous_cache:
@@ -42,13 +42,12 @@ build_prod_image:
     DOCKER_TLS_CERTDIR: "/certs"
 
   before_script:
-    - echo $REGISTRY_ACCESS_KEY | docker login -u $REGISTRY_USER --password-stdin
     - apk add make
-#    - cd ./celebrity_recognition_ai/app/
+    - echo $REGISTRY_ACCESS_KEY | docker login -u $REGISTRY_USER --password-stdin
 
   script:
     # Docker Hub
-    - make build1 IMAGE_NAME=$IMAGE_NAME IMAGE_TAG=$IMAGE_TAG
+    - make build_pipeline IMAGE_NAME=$IMAGE_NAME IMAGE_TAG=$IMAGE_TAG
     - docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_NAME:$LATEST
     - docker push $IMAGE_NAME:$IMAGE_TAG
     - docker push $IMAGE_NAME:$LATEST
@@ -59,16 +58,16 @@ build_prod_image:
 #  only:
 #    - main
 
-#build_dev_image:
-#  extends:
-#  - build_prod_image
-#  - .no_previous_cache
-#
-#  script:
-#    - make build_pipeline IMAGE_NAME=$IMAGE_NAME IMAGE_TAG=DEV-$CI_COMMIT_SHORT_SHA
-#    - docker tag $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA $IMAGE_NAME:DEV-latest
-#    - docker push $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA
-#    - docker push $IMAGE_NAME:DEV-latest
+build_dev_image:
+  extends:
+  - build_prod_image
+  - .no_previous_cache
+
+  script:
+    - make build_pipeline IMAGE_NAME=$IMAGE_NAME IMAGE_TAG=DEV-$CI_COMMIT_SHORT_SHA
+    - docker tag $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA $IMAGE_NAME:DEV-latest
+    - docker push $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA
+    - docker push $IMAGE_NAME:DEV-latest
     
 #  only:
 #    - develop
