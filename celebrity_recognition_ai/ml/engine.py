@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
 
+<<<<<<< HEAD
 import mlflow
+=======
+import mlflow  # type: ignore
+>>>>>>> 2d6abe472ba5ae7b2cc504672350dfea6fef4742
 import numpy as np
 import torch
 

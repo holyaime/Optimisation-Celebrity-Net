@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import timm
+import timm  # type: ignore
 import torch.nn as nn
 
 
