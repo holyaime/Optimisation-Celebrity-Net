@@ -67,8 +67,9 @@ build_prod_image:
   after_script:
     - docker logout
 
-  only:
-    - main
+#  only:
+#    - main
+  when: manual
 
 build_dev_image:
   extends:
@@ -81,8 +82,8 @@ build_dev_image:
     - docker push $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA
     - docker push $IMAGE_NAME:DEV-latest
     
-  only:
-    - develop
+#  only:
+#    - develop
   when: manual
 
 
