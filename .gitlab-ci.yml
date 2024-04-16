@@ -67,6 +67,7 @@ build_dev_image:
 
   script:
     - ls
+    - find / -name requirements.txt -print
     - make build_pipeline IMAGE_NAME=$IMAGE_NAME IMAGE_TAG=DEV-$CI_COMMIT_SHORT_SHA
     - docker tag $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA $IMAGE_NAME:DEV-latest
     - docker push $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA
