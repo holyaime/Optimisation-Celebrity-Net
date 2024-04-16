@@ -43,6 +43,15 @@ build:
 	-f celebrity_recognition_ai/app/Dockerfile .
 	rm -rf dist
 	rm requirements.txt
+
+build_pipeline:
+	build_common
+	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) --build-arg MODEL="celebritynet.pth" \
+	-f celebrity_recognition_ai/app/Dockerfile .
+	rm -rf dist
+	rm requirements.txt
+
+
 run:
 	docker run -d -p 5001:5001 celebritynet
 	

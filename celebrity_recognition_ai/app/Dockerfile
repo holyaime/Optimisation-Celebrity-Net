@@ -6,7 +6,7 @@ COPY requirements.txt dist/*.whl /tmp/
 RUN python -m pip install --upgrade pip && \
     pip install --no-cache-dir -r /tmp/requirements.txt && \
     pip install --no-cache-dir /tmp/*.whl && \
-    pip install torch torchvision \ 
+    pip install torch torchvision \
     --index-url https://download.pytorch.org/whl/cpu && \
     pip install timm && rm -rf /tmp
 

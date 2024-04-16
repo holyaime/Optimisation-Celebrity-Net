@@ -47,7 +47,7 @@ build_prod_image:
 
   script:
     # Docker Hub
-    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
+    - make build_pipeline IMAGE_NAME=$IMAGE_NAME IMAGE_TAG=$IMAGE_TAG
     - docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_NAME:$LATEST
     - docker push $IMAGE_NAME:$IMAGE_TAG
     - docker push $IMAGE_NAME:$LATEST
@@ -64,13 +64,13 @@ build_dev_image:
   - .no_previous_cache
 
   script:
-    - docker build -t $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA .
+    - make build_pipeline IMAGE_NAME=$IMAGE_NAME IMAGE_TAG=DEV-$CI_COMMIT_SHORT_SHA
     - docker tag $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA $IMAGE_NAME:DEV-latest
     - docker push $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA
     - docker push $IMAGE_NAME:DEV-latest
     
-  only:
-    - develop
+#  only:
+#    - develop
 
 
 # deploy to yann
