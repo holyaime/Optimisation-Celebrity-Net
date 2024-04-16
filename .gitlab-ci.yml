@@ -67,8 +67,8 @@ build_prod_image:
   after_script:
     - docker logout
 
-#  only:
-#    - main
+  only:
+    - main
 
 build_dev_image:
   extends:
@@ -76,15 +76,14 @@ build_dev_image:
   - .no_previous_cache
 
   script:
-    - ls
-    - find / -name requirements.txt -print
     - make build_pipeline IMAGE_NAME=$IMAGE_NAME IMAGE_TAG=DEV-$CI_COMMIT_SHORT_SHA
     - docker tag $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA $IMAGE_NAME:DEV-latest
     - docker push $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA
     - docker push $IMAGE_NAME:DEV-latest
     
-#  only:
-#    - develop
+  only:
+    - develop
+  when: manual
 
 
 # deploy to yann
@@ -106,12 +105,12 @@ deploy-to-stage:
     name: develop
     url: $DEV_SERVER_ADDRESS
 
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-      when: always
-    
-    - if: $CI_COMMIT_BRANCH == "develop"
-      when: manual
+#  rules:
+#    - if: $CI_COMMIT_BRANCH == "main"
+#      when: always
+#
+#    - if: $CI_COMMIT_BRANCH == "develop"
+#      when: always
 
 
 # deploy to sankara

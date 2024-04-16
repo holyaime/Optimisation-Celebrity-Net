@@ -44,7 +44,6 @@ build:
 	rm requirements.txt
 
 build_pipeline:
-	find / -name requirements.txt -print
 	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) --build-arg MODEL="celebritynet.pth" \
 	-f celebrity_recognition_ai/app/Dockerfile .
 	rm -rf dist
