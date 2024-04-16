@@ -36,20 +36,20 @@ security: poetry_install ##for security checking
 	poetry run pre-commit run semgrep
 
 build:
-    poetry export -f requirements.txt --only main --without-hashes --without-urls -o requirements.txt
-    poetry build
-    docker build -t celebritynet --build-arg MODEL="celebritynet.pth" \
-    -f celebrity_recognition_ai/app/Dockerfile .
-    rm -rf dist
-    rm requirements.txt
+	poetry export -f requirements.txt --only main --without-hashes --without-urls -o requirements.txt
+	poetry build
+	docker build -t celebritynet --build-arg MODEL="celebritynet.pth" \
+	-f celebrity_recognition_ai/app/Dockerfile .
+	rm -rf dist
+	rm requirements.txt
 
 build1:
-    ls
-    pwd
-    docker build -t $IMAGE_NAME:$IMAGE_TAG --build-arg MODEL="celebritynet.pth" \
-    -f celebrity_recognition_ai/app/Dockerfile .
-    rm -rf dist
-    rm requirements.txt
+	ls
+	pwd
+	docker build -t $IMAGE_NAME:$IMAGE_TAG --build-arg MODEL="celebritynet.pth" \
+	-f celebrity_recognition_ai/app/Dockerfile .
+	rm -rf dist
+	rm requirements.txt
 
 run:
 	docker run -d -p 5001:5001 celebritynet
