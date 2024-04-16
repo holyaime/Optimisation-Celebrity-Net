@@ -2,7 +2,7 @@ FROM --platform=linux/amd64 python:3.9-slim as builder
 ARG MODEL
 ENV MODEL=${MODEL}
 
-COPY ./requirements.txt ./dist/*.whl /tmp/
+COPY requirements.txt dist/*.whl /tmp/
 RUN python -m pip install --upgrade pip && \
     pip install --no-cache-dir -r /tmp/requirements.txt && \
     pip install --no-cache-dir /tmp/*.whl && \

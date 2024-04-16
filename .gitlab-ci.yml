@@ -31,6 +31,17 @@ include:
 .no_previous_cache:
   cache: []
 
+requirements:
+  image: datakori/poetry
+
+  script:
+    - poetry export -f requirements.txt --only main --without-hashes --without-urls -o requirements.txt
+    - poetry build
+  artifacts:
+    paths:
+      - requirements.txt
+      - dist/*.whl
+
 build_prod_image:
   stage: build
   image: docker:26.0.0-rc2-cli
