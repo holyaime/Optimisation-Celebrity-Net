@@ -35,11 +35,11 @@ class CelebrityPrediction:
         return self.model_arch
 
     @property
-    def labels_map_reverse(self):
+    def categories(self):
         with open(self.config_path, "r") as file:
             content = yaml.safe_load(file)
         categories = content["transverse"]["categories"]
-        return {str(i): categories[i] for i in range(len(categories))}
+        return categories
 
     def _load_image(self, image_b64):
         image_binary = base64.b64decode(image_b64)
@@ -59,13 +59,14 @@ class CelebrityPrediction:
         with torch.no_grad():
             out = self.model(X).squeeze(0)
             out = F.softmax(out, dim=-1)
-            proba, index = torch.topk(out, 1)
-            index = index.item()
-            proba = round(proba.item(), 4)
-        return proba, index
+            list_probas = out.numpy()
+            list_probas = [str(round(prob, 2)) for prob in list_probas]
 
-    def _post_process(self, proba, index):
-        response = {"category": self.labels_map_reverse[index], "probability": proba}
+        return list_probas
+
+    def _post_process(self, list_probas):
+
+        response = {"categories": self.categories, "probabilities": list_probas}
         return response
 
     def inference_pipeline(self, image_b64):
@@ -75,7 +76,7 @@ class CelebrityPrediction:
         # Preprocess it
         X = self._preprocess(image)
         # Go through the model and get a prediction
-        proba, index = self._predict(X)
+        list_probas = self._predict(X)
         # Post process the prediction and build a response
-        response = self._post_process(proba, str(index))
+        response = self._post_process(list_probas)
         return response
