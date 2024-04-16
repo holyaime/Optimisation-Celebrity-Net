@@ -48,7 +48,7 @@ build_pipeline:
     ls
     pwd
 	make build_common
-	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) --build-arg MODEL="celebritynet.pth" \
+	docker build -t $IMAGE_NAME:$IMAGE_TAG --build-arg MODEL="celebritynet.pth" \
 	-f celebrity_recognition_ai/app/Dockerfile .
 	rm -rf dist
 	rm requirements.txt
