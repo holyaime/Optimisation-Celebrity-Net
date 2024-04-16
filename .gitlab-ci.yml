@@ -43,7 +43,8 @@ build_prod_image:
 
   before_script:
     - echo $REGISTRY_ACCESS_KEY | docker login -u $REGISTRY_USER --password-stdin
-    - cd ./celebrity_recognition_ai/app/
+    - apk add make
+#    - cd ./celebrity_recognition_ai/app/
 
   script:
     # Docker Hub
