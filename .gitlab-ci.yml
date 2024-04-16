@@ -9,6 +9,7 @@ stages:
 - quality_check
 - test
 - security
+- requirements
 - build
 - develop
 - production
@@ -33,7 +34,7 @@ include:
 
 requirements:
   image: datakori/poetry
-
+  stage: requirements
   script:
     - poetry export -f requirements.txt --only main --without-hashes --without-urls -o requirements.txt
     - poetry build
