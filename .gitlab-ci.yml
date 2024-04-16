@@ -67,9 +67,8 @@ build_prod_image:
   after_script:
     - docker logout
 
-#  only:
-#    - main
-  when: manual
+  only:
+    - main
 
 build_dev_image:
   extends:
@@ -82,8 +81,8 @@ build_dev_image:
     - docker push $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA
     - docker push $IMAGE_NAME:DEV-latest
     
-#  only:
-#    - develop
+  only:
+    - develop
   when: manual
 
 
@@ -106,12 +105,12 @@ deploy-to-stage:
     name: develop
     url: $DEV_SERVER_ADDRESS
 
-#  rules:
-#    - if: $CI_COMMIT_BRANCH == "main"
-#      when: always
-#
-#    - if: $CI_COMMIT_BRANCH == "develop"
-#      when: always
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: always
+
+    - if: $CI_COMMIT_BRANCH == "develop"
+      when: always
 
 
 # deploy to sankara
