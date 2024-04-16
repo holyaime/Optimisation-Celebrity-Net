@@ -43,7 +43,7 @@ build:
 	rm -rf dist
 	rm requirements.txt
 
-build_pipeline:
+build1:
     ls
     pwd
 	docker build -t $IMAGE_NAME:$IMAGE_TAG --build-arg MODEL="celebritynet.pth" \

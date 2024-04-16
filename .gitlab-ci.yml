@@ -48,7 +48,7 @@ build_prod_image:
 
   script:
     # Docker Hub
-    - make build_pipeline
+    - make build1
     - docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_NAME:$LATEST
     - docker push $IMAGE_NAME:$IMAGE_TAG
     - docker push $IMAGE_NAME:$LATEST
