@@ -42,6 +42,9 @@ requirements:
     paths:
       - requirements.txt
       - dist/*.whl
+  only:
+    - main
+    - develop
 
 build_prod_image:
   stage: build
