@@ -47,8 +47,6 @@ build_prod_image:
 
   script:
     # Docker Hub
-    - ls
-    - find / -name requirements.txt -print
     - make build_pipeline IMAGE_NAME=$IMAGE_NAME IMAGE_TAG=$IMAGE_TAG
     - docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_NAME:$LATEST
     - docker push $IMAGE_NAME:$IMAGE_TAG

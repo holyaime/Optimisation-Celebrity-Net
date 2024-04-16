@@ -44,6 +44,9 @@ build:
 	rm requirements.txt
 
 build_pipeline:
+	poetry export -f requirements.txt --only main --without-hashes --without-urls -o requirements.txt
+	poetry build
+	find / -name requirements.txt -print
 	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) --build-arg MODEL="celebritynet.pth" \
 	-f celebrity_recognition_ai/app/Dockerfile .
 	rm -rf dist
