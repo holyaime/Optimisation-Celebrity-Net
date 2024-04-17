@@ -139,6 +139,6 @@ deploy-to-prod:
     name: production
     url: $PROD_SERVER_ADDRESS
 
-  when: manual
-  only:
-  - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: manual
