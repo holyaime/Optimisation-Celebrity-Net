@@ -45,7 +45,7 @@ class CelebrityPrediction:
         image_binary = base64.b64decode(image_b64)
         # Convert the base64 image to PIL Image object
         image_buf = io.BytesIO(image_binary)
-        image = Image.open(image_buf)
+        image = Image.open(image_buf).convert("RGB")
         return image
 
     def _preprocess(self, image):

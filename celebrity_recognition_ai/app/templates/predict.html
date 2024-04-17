@@ -6,18 +6,16 @@
 <!-- Resultat de la prédiction -->
 <div class="container-fluid">
   <div class="row justify-content-center align-items-center" style="height: 45vh;">
-      <div class="col-6">
+      <div class="col-8" id="c">
           <h2 class="text-center fw-bold mb-4 mt-4">Results</h2>
           <div class="card">
               <div class="row card-body align-items-center">
                   <canvas id="myChart"></canvas>
-                  <div>
-                      <button type="button" class="btn btn-rounded btn-lg text-white m-3" style="background-color: #1eb66B" onclick="window.location.href = '{{ url_for( 'home' ) }}';">
-                        <i class="fa-solid fa-house"></i>
-                      </button>
-                  </div>
               </div>
           </div>
+          <button type="button" class="btn btn-rounded btn-lg text-white m-3" style="background-color: #1eb66B" onclick="window.location.href = '{{ url_for( 'home' ) }}';">
+            <i class="fa-solid fa-house"></i>
+          </button>
       </div>
   </div>
 </div>
@@ -28,19 +26,39 @@
 
   const ctx = document.getElementById('myChart');
 
+  function myFunction(x) {
+    if (x.matches) { // If media query matches
+      document.getElementById("c").className = "col-12"
+    } else {
+      document.body.style.backgroundColor = "white";
+    }
+  }
   
+  // Create a MediaQueryList object
+  var x = window.matchMedia("(max-width: 700px)")
+  
+  // Call listener function at run time
+  myFunction(x);
+  
+  // Attach listener function on state changes
+  x.addEventListener("change", function() {
+    myFunction(x);
+  });
+
+
+  lab = [
+      'Ado',
+      'Arafat',
+      'Didi',
+      'Drogba',
+      'Bedie',
+      'Gbagbo'
+    ]
 
   new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: [
-        '{{predicts.categories[0]}}',
-        '{{predicts.categories[1]}}',
-        '{{predicts.categories[2]}}',
-        '{{predicts.categories[3]}}',
-        '{{predicts.categories[4]}}',
-        '{{predicts.categories[5]}}',
-      ],
+      labels: lab,
       datasets: [{
         label: '% Pourcentage %',
         data: {{predicts.probabilities}},
