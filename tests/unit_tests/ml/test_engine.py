@@ -31,11 +31,11 @@ class TestCelebrityEngine:
 
     def teardown_method(self):
         del self.model
-        del (self.criterion,)
+        del self.criterion
         del self.optimizer
         del self.device
-        del (self.categories,)
-        del (self.train_images_absolute_paths,)
+        del self.categories
+        del self.train_images_absolute_paths
         del self.validation_images_absolute_paths
 
     def test_one_epoch_training(self):
