@@ -111,6 +111,10 @@ deploy-to-dev:
     name: develop
     url: $DEV_SERVER_ADDRESS
 
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "develop"
+
   needs:
     - build_dev_image
 
@@ -131,6 +135,9 @@ deploy-to-prod:
   environment:
     name: production
     url: $PROD_SERVER_ADDRESS
+
+  rules:
+    - if $CI_COMMIT_BRANCH == "main"
 
   needs:
     - build_prod_image
