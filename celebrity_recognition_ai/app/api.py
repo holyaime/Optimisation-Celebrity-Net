@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+import base64
 import os
 
-from flask import Flask, jsonify, make_response, request
+from flask import Flask, render_template, request
 
 from celebrity_recognition_ai.app.utils import CelebrityPrediction
 from celebrity_recognition_ai.ml.models import CelebrityNet
@@ -19,14 +20,24 @@ predictor = CelebrityPrediction(
 app = Flask(__name__)
 
 
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+
 @app.route("/celebrity/predict", methods=["POST"])
 def prediction_pipeline():
-    # Get the image in base 64 and decode it
-    payload = request.form.to_dict(flat=False)
-    image_b64 = payload["image"][0]
-    # Pass it through the inference pipeline
-    response = predictor.inference_pipeline(image_b64)
-    return make_response(jsonify(response))
+    # Retrieve image
+    img = request.files["image"]
+
+    # Encode to base64
+    img_b64 = base64.b64encode(img.read())
+
+    # Pass it trough model
+    response = predictor.inference_pipeline(img_b64)
+    response["probabilities"] = [float(p) for p in response["probabilities"]]
+
+    return render_template("predict.html", predicts=response)
 
 
 @app.route("/celebrity/healthcheck", methods=["GET"])
