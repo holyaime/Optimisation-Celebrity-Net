@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import argparse
-import base64
 
 import requests
 
@@ -28,10 +27,9 @@ filename = args.filename
 api_url = "http://" + args.host_ip + ":" + args.port + "/celebrity/predict"
 
 with open(filename, "rb") as img:
-    img_b64 = base64.b64encode(img.read())
+    img_64 = img.read()
 
-payload = {"image": img_b64}
-response = requests.post(url=api_url, data=payload)  # nosec
+payload = {"image": img_64}
+response = requests.post(url=api_url, files=payload)
 
 print("Prediction status code: ", response.status_code)
-print("Prediction: ", response.text)
