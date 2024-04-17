@@ -12,6 +12,10 @@ albumentations = "^1.4.3"
 gunicorn = "^21.2.0"
 flask = "^3.0.3"
 types-pyyaml = "^6.0.12.20240311"
+jupyter = "^1.0.0"
+notebook = "^7.1.2"
+pytest = "^8.1.1"
+mypy = "^1.9.0"
 
 
 [tool.poetry.group.dev.dependencies]

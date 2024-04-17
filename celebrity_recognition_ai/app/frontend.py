@@ -30,6 +30,6 @@ with open(filename, "rb") as img:
     img_64 = img.read()
 
 payload = {"image": img_64}
-response = requests.post(url=api_url, files=payload)
+response = requests.post(url=api_url, files=payload)  # nosec
 
 print("Prediction status code: ", response.status_code)
