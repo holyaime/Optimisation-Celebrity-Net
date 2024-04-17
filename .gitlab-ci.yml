@@ -28,7 +28,7 @@ include:
   - project: 'DATAKORI/ops/ci-templates'
     file: 'pipeline.yml'
 
-# refrain download of cache for our default job in upstream
+# disallow download of cache for our default job in upstream
 .no_previous_cache:
   cache: []
 
@@ -42,9 +42,9 @@ requirements:
     paths:
       - requirements.txt
       - dist/*.whl
-  only:
-    - main
-    - develop
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "develop"
 
 build_prod_image:
   stage: build
@@ -70,8 +70,9 @@ build_prod_image:
   after_script:
     - docker logout
 
-  only:
-    - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: manual
 
 build_dev_image:
   extends:
@@ -83,10 +84,14 @@ build_dev_image:
     - docker tag $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA $IMAGE_NAME:DEV-latest
     - docker push $IMAGE_NAME:DEV-$CI_COMMIT_SHORT_SHA
     - docker push $IMAGE_NAME:DEV-latest
-    
-  only:
-    - develop
-  when: manual
+
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: always
+
+    - if: $CI_COMMIT_BRANCH == "develop"
+      when: manual
+
 
 
 # deploy to yann
@@ -113,7 +118,7 @@ deploy-to-stage:
       when: always
 
     - if: $CI_COMMIT_BRANCH == "develop"
-      when: always
+      when: manual
 
 
 # deploy to sankara
