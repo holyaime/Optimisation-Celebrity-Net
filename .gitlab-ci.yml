@@ -139,7 +139,7 @@ deploy-to-prod:
     url: $PROD_SERVER_ADDRESS
 
   rules:
-    - if $CI_COMMIT_BRANCH == $MAIN_BRANCH
+    - if: $CI_COMMIT_BRANCH == $MAIN_BRANCH
 
   needs:
     - build_prod_image
