@@ -23,7 +23,7 @@ variables:
   SERVER_PORT: 80
   DEV_SERVER_ADDRESS: http://celebrity.dev.datakori.tech
   PROD_SERVER_ADDRESS: http://celebrity.prod.datakori.tech
-  MAIN_BRANCH: main
+  MAIN_BRANCH: release
   DEV_BRANCH: develop
 
 include:
