@@ -92,10 +92,8 @@ build_dev_image:
     - if: $CI_COMMIT_BRANCH == "develop"
       when: manual
 
-
-
 # deploy to yann
-deploy-to-stage:
+deploy-to-dev:
   image: alpine:latest
   stage: develop
   extends: .no_previous_cache
@@ -113,13 +111,8 @@ deploy-to-stage:
     name: develop
     url: $DEV_SERVER_ADDRESS
 
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-      when: always
-
-    - if: $CI_COMMIT_BRANCH == "develop"
-      when: manual
-
+  needs:
+    - build_dev_image
 
 # deploy to sankara
 deploy-to-prod:
@@ -139,6 +132,5 @@ deploy-to-prod:
     name: production
     url: $PROD_SERVER_ADDRESS
 
-  rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-      when: manual
+  needs:
+    - build_prod_image
