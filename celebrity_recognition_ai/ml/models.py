@@ -4,7 +4,7 @@ import torch
 
 
 class CelebrityNet(torch.nn.Module):
-    def __init__(self, num_classes=6, pretrained=True):
+    def __init__(self, num_classes: int = 6, pretrained: bool = True):
         super().__init__()
         self.backbone = timm.create_model("efficientnet_b4", pretrained=pretrained)
 
