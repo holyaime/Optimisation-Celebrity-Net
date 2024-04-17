@@ -20,8 +20,11 @@ WORKDIR /usr/src/app
 COPY --chown=mluser:mlgroup celebrity_recognition_ai/app/utils.py celebrity_recognition_ai/app/api.py \
     celebrity_recognition_ai/app/trained-models/${MODEL} celebrity_recognition_ai/configs/celebrity-config.yaml ./
 
+COPY --chown=mluser:mlgroup celebrity_recognition_ai/app/static ./static
+COPY --chown=mluser:mlgroup celebrity_recognition_ai/app/templates ./templates
+
 EXPOSE 5001
-CMD ["gunicorn", "--bind", ":5001", "api:app"]
+CMD ["gunicorn", "--bind", ":5001", "api:app", "-k", "gthread", "-w", "3", "--threads", "2"]
 
 
 

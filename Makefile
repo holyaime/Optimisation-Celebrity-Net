@@ -2,7 +2,7 @@
 # Variables
 # PATH_TO_DATASET := "/home/beranger/Downloads/Rice_Image_Dataset/"
 HOST_IP := "0.0.0.0"
-FILENAME := "/home/beranger/Téléchargements/celebrity-data/arafat-dj/307a3374-251d-4f0e-aede-b9983f0f5762.jpeg"
+FILENAME := "/home/aho-uriel/Documents/DK_Projects/DatApero/celebrity-recognition-ai_or/data_test/arafat_dj/2e775ebc-7dc7-449b-acd5-11a5eb77a1d9.jpg"
 PORT := 5001
 
 .PHONY: quality test security-check dev
