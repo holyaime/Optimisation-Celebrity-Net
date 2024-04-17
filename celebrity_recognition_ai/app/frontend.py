@@ -15,7 +15,7 @@ front_parser.add_argument(
 front_parser.add_argument(
     "--host-ip",
     type=str,
-    default="0.0.0.0",
+    default="0.0.0.0",  # nosec
     help="IP address of the host of the prediction api",
 )
 front_parser.add_argument(
