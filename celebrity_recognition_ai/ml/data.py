@@ -9,7 +9,9 @@ import torch.nn.functional as F
 from PIL import Image
 
 
-def get_train_and_validation_images_path(base_path: str, categories:list[str], percentage_train: float =0.8)-> tuple[list[str], list[str]]:
+def get_train_and_validation_images_path(
+    base_path: str, categories: list[str], percentage_train: float = 0.8
+) -> tuple[list[str], list[str]]:
 
     train_images_absolute_paths: list[str] = []
     validation_images_absolute_paths: list[str] = []
@@ -20,7 +22,7 @@ def get_train_and_validation_images_path(base_path: str, categories:list[str], p
         category_images_path = []
         for element in category_data:
             image_path = os.path.join(path, element)
-            
+
             if image_path.endswith(".jpg"):
                 category_images_path.append(image_path)
 
@@ -37,7 +39,12 @@ def get_train_and_validation_images_path(base_path: str, categories:list[str], p
 class CelebrityDataset(torch.utils.data.Dataset):
     "Characterizes a dataset for PyTorch"
 
-    def __init__(self, images_absolute_paths: list[str], categories: list[str], train: bool=True):
+    def __init__(
+        self,
+        images_absolute_paths: list[str],
+        categories: list[str],
+        train: bool = True,
+    ):
         "Initialization"
         self.images_absolute_paths = [
             img_path for img_path in images_absolute_paths if img_path.endswith(".jpg")
@@ -54,7 +61,7 @@ class CelebrityDataset(torch.utils.data.Dataset):
         # Select sample
         image_path = self.images_absolute_paths[index]
         # Load data and get label
-        X :np.ndarray = np.array(Image.open(image_path).convert("RGB"))
+        X = np.array(Image.open(image_path).convert("RGB"))
         if self.train:
             # Augmentations while training
             self.transforms = A.Compose(
@@ -80,12 +87,14 @@ class CelebrityDataset(torch.utils.data.Dataset):
 
         X = self.transforms(image=X)["image"]
 
-        X_tensor : torch.Tensor  = torch.from_numpy(X).permute(2, 0, 1)
+        X_tensor: torch.Tensor = torch.from_numpy(X).permute(2, 0, 1)
         X_tensor = X_tensor.float()
 
         # Labels
-        label: str = image_path.split("/")[-2]
-        label_index: int = self.categories.index(label)
-        y: torch.Tensor = F.one_hot(torch.tensor(label_index), num_classes=len(self.categories))
+        label = image_path.split("/")[-2]
+        label_index = self.categories.index(label)
+        y: torch.Tensor = F.one_hot(
+            torch.tensor(label_index), num_classes=len(self.categories)
+        )
         y = y.float()
         return X_tensor, y
