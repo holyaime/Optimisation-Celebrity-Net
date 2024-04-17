@@ -1,16 +1,20 @@
 {% extends "layouts/base.html" %}
 
+{% block title %} Predict {% endblock %}
+
 {% block content %}
 <!-- Resultat de la prédiction -->
 <div class="container-fluid">
   <div class="row justify-content-center align-items-center" style="height: 45vh;">
       <div class="col-6">
-          <h2 class="text-center mb-4 mt-4">Results</h2>
+          <h2 class="text-center fw-bold mb-4 mt-4">Results</h2>
           <div class="card">
               <div class="row card-body align-items-center">
                   <canvas id="myChart"></canvas>
                   <div>
-                      <button type="button" class="btn btn-link" onclick="window.location.href = '{{ url_for( 'home' ) }}';">Back</button>
+                      <button type="button" class="btn btn-rounded btn-lg text-white m-3" style="background-color: #1eb66B" onclick="window.location.href = '{{ url_for( 'home' ) }}';">
+                        <i class="fa-solid fa-house"></i>
+                      </button>
                   </div>
               </div>
           </div>
@@ -62,8 +66,11 @@
     options: {
       scales: {
         y: {
-          beginAtZero: true
-        }
+          beginAtZero: true,
+          suggestedMin: 0,
+          suggestedMax: 100
+        },
+
       }
     }
   });

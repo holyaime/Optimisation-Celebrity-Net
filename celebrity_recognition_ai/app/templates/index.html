@@ -1,10 +1,10 @@
 {% extends "layouts/base.html" %}
 
 {% block content %}
-<div class="container-fluid">
+<div class="container-fluid mt-5">
   <div class="row justify-content-center align-items-center" style="height: 45vh;">
       <div class="col-md-6">
-          <h2 class="text-center mb-4">Celebrity Recognition AI</h2>
+          <h2 class="text-center fw-bold mb-4">Celebrity Recognition AI</h2>
           <div class="card">
               <div class="card-body">
                   <form action="/celebrity/predict" method="post" enctype="multipart/form-data">
@@ -15,15 +15,24 @@
                               <img id="selectedAvatar" src="https://mdbootstrap.com/img/Photos/Others/placeholder-avatar.jpg"
                               class="rounded-circle" style="width: 200px; height: 200px; object-fit: cover;" alt="example placeholder" />
                           </div>
+                          <div hidden class="text-center text-danger mb-2" id="danger">
+                            Choose image/jpeg file
+                          </div>
                           <div class="d-flex justify-content-center">
                               <div class="btn btn-rounded" style="background-color: #1eb66B" id="input_group">
                                   <label class="form-label text-white m-1" style="background-color: #1eb66B" for="input_file">Upload Image</label>
                                   <input type="file" name="image" class="form-control d-none" id="input_file" onchange="displaySelectedImage(event, 'selectedAvatar')" />
                               </div>
-                              <button type="submit" class="form-label btn btn-rounded text-white" style="background-color: #1eb66B" id="submit_form" hidden>
+                              <button type="submit" class="btn btn-rounded btn-lg text-white" style="background-color: #1eb66B" id="submit_form" hidden>
                                 Predict
                               </button>
                           </div>
+                        </div>
+
+                          <div>
+                            <button hidden id="btn_back" type="button" class="btn btn-rounded text-white m-3" style="background-color: #1eb66B" onclick="window.location.href = '{{ url_for( 'home' ) }}';">
+                              Back
+                            </button>
                         </div>
                       </div>
               
@@ -43,10 +52,14 @@
 
     const input_group = document.getElementById("input_group");
     const submit_form = document.getElementById("submit_form");
+    const btn_back = document.getElementById("btn_back");
+    const danger = document.getElementById("danger");
 
-    if (fileInput.files && fileInput.files[0]) {
+    if (fileInput.files && fileInput.files[0].type == "image/jpeg") {
         input_group.hidden = true
+        btn_back.hidden = false
         submit_form.hidden = false
+        danger.hidden = true
 
         const reader = new FileReader();
 
@@ -55,6 +68,8 @@
         };
 
         reader.readAsDataURL(fileInput.files[0]);
+    }else{
+      danger.hidden = false
     }
   }
 
