@@ -21,8 +21,8 @@ variables:
   APPLICATION_NAME: celebrity-ai
   CONTAINER_PORT: 5001
   SERVER_PORT: 80
-  DEV_SERVER_ADDRESS: http://165.22.194.104
-  PROD_SERVER_ADDRESS: http://164.90.165.129
+  DEV_SERVER_ADDRESS: http://celebrity.dev.datakori.tech
+  PROD_SERVER_ADDRESS: http://celebrity.prod.datakori.tech
   MAIN_BRANCH: main
   DEV_BRANCH: develop
 
