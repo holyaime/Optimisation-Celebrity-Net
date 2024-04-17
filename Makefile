@@ -31,7 +31,6 @@ test: poetry_install ##running test with mypy and pytest
 	poetry run pre-commit run my_py
 	poetry run pre-commit run test
 
-
 security: poetry_install ##for security checking
 	poetry run pre-commit run bandit 
 	poetry run pre-commit run semgrep
@@ -43,6 +42,13 @@ build:
 	-f celebrity_recognition_ai/app/Dockerfile .
 	rm -rf dist
 	rm requirements.txt
+
+build_pipeline:
+	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) --build-arg MODEL="celebritynet.pth" \
+	-f celebrity_recognition_ai/app/Dockerfile .
+	rm -rf dist
+	rm requirements.txt
+
 run:
 	docker run -d -p 5001:5001 celebritynet
 	
