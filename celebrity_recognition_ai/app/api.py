@@ -35,7 +35,12 @@ def prediction_pipeline():
 
     # Pass it trough model
     response = predictor.inference_pipeline(img_b64)
-    response["probabilities"] = [float(p) for p in response["probabilities"]]
+    response["probabilities"] = [
+        100 * (float(p) + 0.01) for p in response["probabilities"]
+    ]
+    response["probabilities"] = [
+        p if p < 100 else 99 for p in response["probabilities"]
+    ]
 
     return render_template("predict.html", predicts=response)
 
@@ -46,4 +51,4 @@ def healthcheck():
 
 
 if __name__ == "__main__":
-    app.run(debug=False, port=5001, host="0.0.0.0")  # nosec
+    app.run(debug=True, port=5001, host="0.0.0.0")  # nosec
