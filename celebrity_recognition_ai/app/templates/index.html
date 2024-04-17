@@ -16,7 +16,7 @@
                               class="rounded-circle" style="width: 200px; height: 200px; object-fit: cover;" alt="example placeholder" />
                           </div>
                           <div hidden class="text-center text-danger mb-2" id="danger">
-                            Choose image/jpeg file
+                            Choose image/jpeg or image image/png file
                           </div>
                           <div class="d-flex justify-content-center">
                               <div class="btn btn-rounded" style="background-color: #1eb66B" id="input_group">
@@ -55,7 +55,7 @@
     const btn_back = document.getElementById("btn_back");
     const danger = document.getElementById("danger");
 
-    if (fileInput.files && fileInput.files[0].type == "image/jpeg") {
+    if (fileInput.files && ["image/jpeg", "image/png"].includes(fileInput.files[0].type) ) {
         input_group.hidden = true
         btn_back.hidden = false
         submit_form.hidden = false
