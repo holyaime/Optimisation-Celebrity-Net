@@ -23,6 +23,8 @@ variables:
   SERVER_PORT: 80
   DEV_SERVER_ADDRESS: http://165.22.194.104
   PROD_SERVER_ADDRESS: http://164.90.165.129
+  MAIN_BRANCH: main
+  DEV_BRANCH: develop
 
 include:
   - project: 'DATAKORI/ops/ci-templates'
@@ -43,8 +45,8 @@ requirements:
       - requirements.txt
       - dist/*.whl
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-    - if: $CI_COMMIT_BRANCH == "develop"
+    - if: $CI_COMMIT_BRANCH == $MAIN_BRANCH
+    - if: $CI_COMMIT_BRANCH == $DEV_BRANCH
 
 build_prod_image:
   stage: build
@@ -71,7 +73,7 @@ build_prod_image:
     - docker logout
 
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == $MAIN_BRANCH
       when: manual
 
 build_dev_image:
@@ -86,10 +88,10 @@ build_dev_image:
     - docker push $IMAGE_NAME:DEV-latest
 
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == $MAIN_BRANCH
       when: always
 
-    - if: $CI_COMMIT_BRANCH == "develop"
+    - if: $CI_COMMIT_BRANCH == $DEV_BRANCH
       when: manual
 
 # deploy to yann
@@ -112,8 +114,8 @@ deploy-to-dev:
     url: $DEV_SERVER_ADDRESS
 
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
-    - if: $CI_COMMIT_BRANCH == "develop"
+    - if: $CI_COMMIT_BRANCH == $MAIN_BRANCH
+    - if: $CI_COMMIT_BRANCH == $DEV_BRANCH
 
   needs:
     - build_dev_image
@@ -137,7 +139,7 @@ deploy-to-prod:
     url: $PROD_SERVER_ADDRESS
 
   rules:
-    - if $CI_COMMIT_BRANCH == "main"
+    - if $CI_COMMIT_BRANCH == $MAIN_BRANCH
 
   needs:
     - build_prod_image
