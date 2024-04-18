@@ -2,7 +2,7 @@
 # Variables
 # PATH_TO_DATASET := "/home/beranger/Downloads/Rice_Image_Dataset/"
 HOST_IP := "0.0.0.0"
-FILENAME := "/home/aho-uriel/Documents/DK_Projects/DatApero/celebrity-recognition-ai_or/data_test/arafat_dj/2e775ebc-7dc7-449b-acd5-11a5eb77a1d9.jpg"
+FILENAME := "/home/beranger/Téléchargements/celebrity-data/arafat-dj/f2629e10-8374-4cfc-9c22-966e3ee0f188.jpg"
 PORT := 5001
 
 .PHONY: quality test security-check dev
@@ -25,10 +25,10 @@ quality: poetry_install ##for checking code quality
 	poetry run pre-commit run code-formater --all-files
 	poetry run pre-commit run sort-imports --all-files
 	poetry run pre-commit run linter --all-files
+	poetry run pre-commit run typing --all-files
 
 
 test: poetry_install ##running test with mypy and pytest
-	poetry run pre-commit run my_py
 	poetry run pre-commit run test
 
 security: poetry_install ##for security checking
