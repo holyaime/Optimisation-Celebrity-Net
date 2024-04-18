@@ -23,7 +23,7 @@ def get_train_and_validation_images_path(
         for element in category_data:
             image_path = os.path.join(path, element)
 
-            if image_path.endswith(".jpg") or image_path.endswith(".jpg"):
+            if image_path.endswith(".jpg") or image_path.endswith(".png"):
                 category_images_path.append(image_path)
 
         random.shuffle(category_images_path)
