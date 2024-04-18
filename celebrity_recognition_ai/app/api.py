@@ -8,7 +8,6 @@ from celebrity_recognition_ai.app.utils import CelebrityPrediction
 from celebrity_recognition_ai.ml.models import CelebrityNet
 
 MODEL_PATH = os.environ["MODEL"]
-# CONFIG_PATH = "celebrity_recognition_ai/configs/labels.yaml"
 CONFIG_PATH = "celebrity-config.yaml"
 
 
@@ -36,10 +35,7 @@ def prediction_pipeline():
     # Pass it trough model
     response = predictor.inference_pipeline(img_b64)
     response["probabilities"] = [
-        100 * (float(p) + 0.01) for p in response["probabilities"]
-    ]
-    response["probabilities"] = [
-        p if p < 100 else 99 for p in response["probabilities"]
+        100 * (float(p) + 0.005) for p in response["probabilities"]
     ]
 
     return render_template("predict.html", predicts=response)

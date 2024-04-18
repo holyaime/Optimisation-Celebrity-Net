@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import argparse
 import logging
+from logging import config
 
 import torch
 import yaml
@@ -9,7 +10,7 @@ from rich.logging import RichHandler
 from celebrity_recognition_ai.ml import data, engine, logging_config, models
 from celebrity_recognition_ai.ml.utils import ParameterError
 
-logging.config.dictConfig(logging_config.logging_config)
+config.dictConfig(logging_config.logging_config)
 logger = logging.getLogger("root")
 logger.handlers[0] = RichHandler(markup=True)
 
