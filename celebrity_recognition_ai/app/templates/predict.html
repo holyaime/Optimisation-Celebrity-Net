@@ -29,13 +29,11 @@
   function myFunction(x) {
     if (x.matches) { // If media query matches
       document.getElementById("c").className = "col-12"
-    } else {
-      document.body.style.backgroundColor = "white";
     }
   }
   
   // Create a MediaQueryList object
-  var x = window.matchMedia("(max-width: 700px)")
+  var x = window.matchMedia("(max-width: 1000px)")
   
   // Call listener function at run time
   myFunction(x);
