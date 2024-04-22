@@ -4,12 +4,12 @@
 
 {% block content %}
 <!-- Resultat de la prédiction -->
-<div class="container-fluid">
-  <div class="row justify-content-center align-items-center" style="height: 45vh;">
+<div class="container-fluid" id="a">
+  <div class="row justify-content-center">
       <div class="col-8" id="c">
-          <h2 class="text-center fw-bold mb-4 mt-4">Results</h2>
+          <h2 class="text-center fw-bold mt-4">Predicted Probabilities</h2>
           <div class="card">
-              <div class="row card-body align-items-center">
+              <div class="row card-body">
                   <canvas id="myChart"></canvas>
               </div>
           </div>
@@ -29,6 +29,7 @@
   function myFunction(x) {
     if (x.matches) { // If media query matches
       document.getElementById("c").className = "col-12"
+      document.getElementById("a").className = "container-fluid mt-5"
     }
   }
   
@@ -80,13 +81,20 @@
       }]
     },
     options: {
+      indexAxis: 'y',
+      responsive: true,
       scales: {
-        y: {
+        x: {
           beginAtZero: true,
           suggestedMin: 0,
           suggestedMax: 100
         },
 
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
       }
     }
   });
