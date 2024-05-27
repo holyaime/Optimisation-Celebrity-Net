@@ -20,7 +20,7 @@ variables:
   LATEST: latest
   APPLICATION_NAME: celebrity-ai
   CONTAINER_PORT: 5001
-  SERVER_PORT: 80
+  SERVER_PORT: 8000
   DEV_SERVER_ADDRESS: http://celebrity.dev.datakori.tech
   PROD_SERVER_ADDRESS: http://celebrity.prod.datakori.tech
   MAIN_BRANCH: release
@@ -122,6 +122,8 @@ deploy-to-dev:
       APPLICATION_NAME=$APPLICATION_NAME \
       IMAGE_NAME=$IMAGE_NAME \
       IMAGE_TAG=DEV-latest \
+      CONTAINER_PORT=$CONTAINER_PORT \
+      SERVER_PORT=$SERVER_PORT \
       && cd $APPLICATION_NAME \
       && sh deploy.sh && rm deploy.sh"
 

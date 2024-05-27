@@ -1,6 +1,6 @@
 services:
   celebrity:
-    image: $IMAGE_NAME:$IMAGE_TAG #TODO: PASS TAG TO docker compose command
+    image: $IMAGE_NAME:$IMAGE_TAG
     container_name: celebrity
     ports:
       - "$SERVER_PORT:$CONTAINER_PORT"
@@ -8,11 +8,11 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nginx.rule=Host(`celebrity.dev.datakori.tech`)"
-      - "traefik.http.routers.nginx.entrypoints=https"
-      - "traefik.http.routers.nginx.tls=true"
-      - "traefik.http.services.nginx.loadbalancer.server.port=8080"
+      - "traefik.http.routers.celebrity.rule=Host(`celebrity.dev.datakori.tech`)"
+      - "traefik.http.routers.celebrity.entrypoints=https"
+      - "traefik.http.routers.celebrity.tls=true"
+      - "traefik.http.services.celebrity.loadbalancer.server.port=$CONTAINER_PORT"
 
-  networks:
-    proxy:
-      external: true
+networks:
+  proxy:
+    external: true
