@@ -115,7 +115,7 @@ deploy-to-dev:
       "mkdir -p $APPLICATION_NAME"
       
       scp -i $ID_RSA -o StrictHostKeyChecking=no \
-      docker-compose-dev.yml deploy.sh $SERVER_USER@$SERVER_IP:$APPLICATION_NAME/docker-compose.yml
+      docker-compose.yml deploy.sh $SERVER_USER@$SERVER_IP:$APPLICATION_NAME/docker-compose.yml
       
       ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP \
       "export \
