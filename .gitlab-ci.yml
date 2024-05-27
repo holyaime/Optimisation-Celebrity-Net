@@ -102,12 +102,28 @@ deploy-to-dev:
 #  tags:
 #      - deployment
   script:
-    - chmod og= $ID_RSA
-    - apk update && apk add openssh-client
-    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "echo $REGISTRY_ACCESS_KEY | docker login -u $REGISTRY_USER --password-stdin"
-    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull $IMAGE_NAME:DEV-latest"
-    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f $APPLICATION_NAME || true"
-    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p $SERVER_PORT:$CONTAINER_PORT --name $APPLICATION_NAME $IMAGE_NAME:DEV-latest"
+    - |
+      chmod og= $ID_RSA
+      apk update && apk add openssh-client
+      ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP \
+      "echo $REGISTRY_ACCESS_KEY | docker login -u $REGISTRY_USER --password-stdin"
+      
+      ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP \
+      "docker pull $IMAGE_NAME:DEV-latest"
+      
+      ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP \
+      "mkdir -p $APPLICATION_NAME"
+      
+      scp -i $ID_RSA -o StrictHostKeyChecking=no \
+      docker-compose-dev.yml deploy.sh $SERVER_USER@$SERVER_IP:$APPLICATION_NAME/docker-compose.yml
+      
+      ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP \
+      "export \
+      APPLICATION_NAME=$APPLICATION_NAME \
+      IMAGE_NAME=$IMAGE_NAME \
+      IMAGE_TAG=DEV-latest \
+      && cd $APPLICATION_NAME \
+      && sh deploy.sh && rm deploy.sh"
 
   environment:
     name: develop
