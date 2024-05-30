@@ -110,7 +110,7 @@ deploy-to-dev:
     - scp -i $ID_RSA -o StrictHostKeyChecking=no docker-compose.yml deploy.sh $SERVER_USER@$SERVER_IP:$APP_LOCATION
     - |
       ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP \
-      "export APPLICATION_NAME=$APPLICATION_NAME IMAGE_NAME=$IMAGE_NAME \
+      "export ENV_NAME=dev APPLICATION_NAME=$APPLICATION_NAME IMAGE_NAME=$IMAGE_NAME \
       IMAGE_TAG=DEV-latest CONTAINER_PORT=$CONTAINER_PORT SERVER_PORT=$SERVER_PORT \
       && cd $APP_LOCATION && sh deploy.sh && rm deploy.sh"
 
@@ -132,12 +132,17 @@ deploy-to-prod:
   extends: .no_previous_cache
   script:
     - echo "Deploy to production server"
-    - chmod og= $ID_RSA_PROD
-    - apk update && apk add openssh-client
-    - ssh -i $ID_RSA_PROD -o StrictHostKeyChecking=no $SERVER_USER@$PROD_SERVER_IP "echo $REGISTRY_ACCESS_KEY | docker login -u $REGISTRY_USER --password-stdin"
-    - ssh -i $ID_RSA_PROD -o StrictHostKeyChecking=no $SERVER_USER@$PROD_SERVER_IP "docker pull $IMAGE_NAME:$LATEST"
-    - ssh -i $ID_RSA_PROD -o StrictHostKeyChecking=no $SERVER_USER@$PROD_SERVER_IP "docker container rm -f $APPLICATION_NAME || true"
-    - ssh -i $ID_RSA_PROD -o StrictHostKeyChecking=no $SERVER_USER@$PROD_SERVER_IP "docker run -d -p $SERVER_PORT:$CONTAINER_PORT --name $APPLICATION_NAME $IMAGE_NAME:$LATEST"
+    -  chmod og= $ID_RSA_PROD
+    -  apk update && apk add openssh-client
+    -  ssh -i $ID_RSA_PROD -o StrictHostKeyChecking=no $SERVER_USER@$PROD_SERVER_IP "echo $REGISTRY_ACCESS_KEY | docker login -u $REGISTRY_USER --password-stdin"
+    -  ssh -i $ID_RSA_PROD -o StrictHostKeyChecking=no $SERVER_USER@$PROD_SERVER_IP "docker pull $IMAGE_NAME:$LATEST"
+    -  ssh -i $ID_RSA_PROD -o StrictHostKeyChecking=no $SERVER_USER@$PROD_SERVER_IP "rm -fr $APP_LOCATION && mkdir -p $APP_LOCATION"
+    -  scp -i $ID_RSA_PROD -o StrictHostKeyChecking=no docker-compose.yml deploy.sh $SERVER_USER@$PROD_SERVER_IP:$APP_LOCATION
+    -  |
+      ssh -i $ID_RSA_PROD -o StrictHostKeyChecking=no $SERVER_USER@$PROD_SERVER_IP \
+      "export ENV_NAME=prod APPLICATION_NAME=$APPLICATION_NAME IMAGE_NAME=$IMAGE_NAME \
+      IMAGE_TAG=DEV-latest CONTAINER_PORT=$CONTAINER_PORT SERVER_PORT=$SERVER_PORT \
+      && cd $APP_LOCATION && sh deploy.sh && rm deploy.sh"
 
   environment:
     name: production
