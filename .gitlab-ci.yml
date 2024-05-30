@@ -16,13 +16,14 @@ stages:
 
 variables:
   IMAGE_NAME: datakori/celebrity-ai
-  IMAGE_TAG: v1.0.0
+  IMAGE_TAG: v1.0.1
   LATEST: latest
   APPLICATION_NAME: celebrity-ai
   CONTAINER_PORT: 5001
   SERVER_PORT: 8000
-  DEV_SERVER_ADDRESS: http://celebrity.dev.datakori.tech
-  PROD_SERVER_ADDRESS: http://celebrity.prod.datakori.tech
+  APP_LOCATION: /home/$SERVER_USER/$APPLICATION_NAME/
+  DEV_SERVER_ADDRESS: http://celebrity-ai.dev.datakori.tech
+  PROD_SERVER_ADDRESS: http://celebrity-ai.prod.datakori.tech
   MAIN_BRANCH: release
   DEV_BRANCH: develop
 
@@ -99,33 +100,19 @@ deploy-to-dev:
   image: alpine:latest
   stage: develop
   extends: .no_previous_cache
-#  tags:
-#      - deployment
   script:
+    - echo "Deploy to staging server"
+    - chmod og= $ID_RSA
+    - apk update && apk add openssh-client
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "echo $REGISTRY_ACCESS_KEY | docker login -u $REGISTRY_USER --password-stdin"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull $IMAGE_NAME:DEV-latest"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "rm -fr $APP_LOCATION && mkdir -p $APP_LOCATION"
+    - scp -i $ID_RSA -o StrictHostKeyChecking=no docker-compose.yml deploy.sh $SERVER_USER@$SERVER_IP:$APP_LOCATION
     - |
-      chmod og= $ID_RSA
-      apk update && apk add openssh-client
       ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP \
-      "echo $REGISTRY_ACCESS_KEY | docker login -u $REGISTRY_USER --password-stdin"
-      
-      ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP \
-      "docker pull $IMAGE_NAME:DEV-latest"
-      
-      ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP \
-      "mkdir -p $APPLICATION_NAME"
-      
-      scp -i $ID_RSA -o StrictHostKeyChecking=no \
-      docker-compose.yml deploy.sh $SERVER_USER@$SERVER_IP:$APPLICATION_NAME/docker-compose.yml
-      
-      ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP \
-      "export \
-      APPLICATION_NAME=$APPLICATION_NAME \
-      IMAGE_NAME=$IMAGE_NAME \
-      IMAGE_TAG=DEV-latest \
-      CONTAINER_PORT=$CONTAINER_PORT \
-      SERVER_PORT=$SERVER_PORT \
-      && cd $APPLICATION_NAME \
-      && sh deploy.sh && rm deploy.sh"
+      "export APPLICATION_NAME=$APPLICATION_NAME IMAGE_NAME=$IMAGE_NAME \
+      IMAGE_TAG=DEV-latest CONTAINER_PORT=$CONTAINER_PORT SERVER_PORT=$SERVER_PORT \
+      && cd $APP_LOCATION && sh deploy.sh && rm deploy.sh"
 
   environment:
     name: develop
