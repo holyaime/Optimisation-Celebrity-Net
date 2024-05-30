@@ -3,7 +3,13 @@
 # PATH_TO_DATASET := "/home/beranger/Downloads/Rice_Image_Dataset/"
 HOST_IP := "0.0.0.0"
 FILENAME := "/home/beranger/Téléchargements/celebrity-data/arafat-dj/f2629e10-8374-4cfc-9c22-966e3ee0f188.jpg"
-PORT := 5001
+PORT_OUTSIDE := 8000
+PORT_CONTAINER := 5001
+IMAGE_NAME = datakori/celebrity-ai
+IMAGE_TAG = latest
+MODEL_NAME = celebritynet.pth
+DOCKERFILE_LOCATION = celebrity_recognition_ai/app/Dockerfile
+CONTAINER_NAME = test
 
 .PHONY: quality test security-check dev
 
@@ -19,7 +25,7 @@ quality: poetry_install ##for checking code quality
 	poetry run pre-commit run end-of-file-fixer --all-files
 	poetry run pre-commit run check-docstring-first --all-files
 	poetry run pre-commit run check-merge-conflict --all-files
-	poetry run pre-commit run fix-encoding-pragma --all-files
+	poetry run pre-commit run pyupgrade --all-files
 	poetry run pre-commit run no-commit-to-branch --all-files
 	poetry run pre-commit run check-added-large-files --all-files
 	poetry run pre-commit run code-formater --all-files
@@ -38,19 +44,20 @@ security: poetry_install ##for security checking
 build:
 	poetry export -f requirements.txt --only main --without-hashes --without-urls -o requirements.txt
 	poetry build
-	docker build -t celebritynet --build-arg MODEL="celebritynet.pth" \
-	-f celebrity_recognition_ai/app/Dockerfile .
+	DOCKER_BUILDKIT=1 docker build -t $(IMAGE_NAME):$(IMAGE_TAG) --build-arg MODEL="$(MODEL_NAME)" -f $(DOCKERFILE_LOCATION) .
 	rm -rf dist
 	rm requirements.txt
 
 build_pipeline:
-	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) --build-arg MODEL="celebritynet.pth" \
-	-f celebrity_recognition_ai/app/Dockerfile .
+	DOCKER_BUILDKIT=1 docker build -t $(IMAGE_NAME):$(IMAGE_TAG) --build-arg MODEL="$(MODEL_NAME)" -f $(DOCKERFILE_LOCATION) .
 	rm -rf dist
 	rm requirements.txt
 
 run:
-	docker run -d -p 5001:5001 celebritynet
-	
+	docker run -d -p $(PORT_OUTSIDE):$(PORT_CONTAINER) celebritynet
+
+stop:
+	docker stop $(CONTAINER_NAME)
+
 predict:
-	python celebrity_recognition_ai/app/frontend.py --filename ${FILENAME} --host-ip ${HOST_IP} --port ${PORT}
+	python celebrity_recognition_ai/app/frontend.py --filename ${FILENAME} --host-ip ${HOST_IP} --port ${PORT_CONTAINER}

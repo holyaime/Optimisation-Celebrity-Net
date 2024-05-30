@@ -1,0 +1,18 @@
+services:
+  test:
+    image: ${IMAGE_NAME}:${IMAGE_TAG}
+    container_name: ${APPLICATION_NAME}
+    ports:
+      - "${SERVER_PORT}:${CONTAINER_PORT}"
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${APPLICATION_NAME}.rule=Host(`${APPLICATION_NAME}.dev.datakori.tech`)"
+      - "traefik.http.routers.${APPLICATION_NAME}.entrypoints=https"
+      - "traefik.http.routers.${APPLICATION_NAME}.tls=true"
+      - "traefik.http.services.${APPLICATION_NAME}.loadbalancer.server.port=${CONTAINER_PORT}"
+
+networks:
+  proxy:
+    external: true
