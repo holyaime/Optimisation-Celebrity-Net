@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 import base64
 import os
+import time
 
 from flask import Flask, render_template, request
 
 from celebrity_recognition_ai.app.utils import CelebrityPrediction
 from celebrity_recognition_ai.ml.models import CelebrityNet
+import celebrity_recognition_ai.ml.ModifiedStudentb0Regressor import ModifiedStudentNetboRegressor
 
 MODEL_PATH = os.environ["MODEL"]
-CONFIG_PATH = "celebrity-config.yaml"
+CONFIG_PATH = "/home/holy/Documents/memoire/celebrity-recognition-ai/celebrity_recognition_ai/configs/celebrity-config.yaml"
+
 
 
 model_arch = CelebrityNet(pretrained=False)
@@ -33,12 +36,17 @@ def prediction_pipeline():
     img_b64 = base64.b64encode(img.read())
 
     # Pass it trough model
+    start_time = time.time()
     response = predictor.inference_pipeline(img_b64)
+    end_time = time.time()
+
+    total_latency = end_time - start_time
+
     response["probabilities"] = [
         100 * (float(p) + 0.005) for p in response["probabilities"]
     ]
 
-    return render_template("predict.html", predicts=response)
+    return render_template("predict.html", predicts=response, temps_latence=total_latency)
 
 
 @app.route("/celebrity/healthcheck", methods=["GET"])

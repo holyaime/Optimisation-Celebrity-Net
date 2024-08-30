@@ -9,7 +9,8 @@ IMAGE_NAME = datakori/celebrity-ai
 IMAGE_TAG = latest
 MODEL_NAME = celebritynet.pth
 DOCKERFILE_LOCATION = celebrity_recognition_ai/app/Dockerfile
-CONTAINER_NAME = test
+CONTAINER_NAME = testCMD ["gunicorn", "--bind", ":5001", "api:app", "-k", "gthread", "-w", "3", "--threads", "2"]
+
 
 .PHONY: quality test security-check dev
 

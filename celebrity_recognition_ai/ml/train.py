@@ -7,8 +7,8 @@ import torch
 import yaml
 from rich.logging import RichHandler
 
-from celebrity_recognition_ai.ml import data, engine, logging_config, models
-from celebrity_recognition_ai.ml.utils import ParameterError
+import data, engine, logging_config,student_bo
+from utils import ParameterError
 
 config.dictConfig(logging_config.logging_config)
 logger = logging.getLogger("root")
@@ -121,7 +121,7 @@ if __name__ == "__main__":
     )
 
     # Intanciating a model architecture
-    net = models.CelebrityNet()
+    net = student_bo.StudentNetbo()
     # Declaring Criterion and Optimizer
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(net.parameters(), lr=0.01)
@@ -138,6 +138,6 @@ if __name__ == "__main__":
         device,
         nb_epochs=nb_epochs,
         early_stopping=early_stopping,
-        model_name="celebritynet.pth",
+        model_name="studentb0_original.pth",
         breakpoint=None,
     )

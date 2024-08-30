@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "celebrity-recognition-ai"
+version = "0.1.0"
+description = ""
+authors = ["Béranger GUEDOU <beranger@datakori.tech>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pillow = "^10.3.0"
+albumentations = "^1.4.3"
+gunicorn = "^21.2.0"
+flask = "^3.0.3"
+
+
+[tool.poetry.group.dev.dependencies]
+timm = "^0.9.16"
+pre-commit-hooks = "^4.6.0"
+pre-commit = "^3.7.0"
+mlflow = "^2.11.3"
+isort = "^5.13.2"
+flake8 = "^7.0.0"
+rich = "^13.7.1"
+black = "^24.3.0"
+bandit = "^1.7.8"
+semgrep = "^1.68.0"
+olefile = "^0.47"
+mypy = "^1.9.0"
+types-pyyaml = "^6.0.12.20240311"
+
+
+[tool.poetry.group.test.dependencies]
+pytest-mock = "^3.14.0"
+pytest = "^8.1.1"
+
+
+[tool.poetry.group.docs.dependencies]
+sphynx = "^0.0.3"
+
+
+[[tool.poetry.source]]
+name = "pytorch_cpu"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "explicit"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

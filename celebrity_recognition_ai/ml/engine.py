@@ -7,7 +7,7 @@ import mlflow  # type: ignore
 import numpy as np
 import torch
 
-from celebrity_recognition_ai.ml.models import CelebrityNet
+from models import CelebrityNet
 
 
 def one_epoch_training(

@@ -1,0 +1,97 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: local
+    hooks:
+      - id: check-yaml
+        name: check-yaml
+        entry: check-yaml
+        language: system
+        types: [yaml]
+
+      - id: pyupgrade
+        name: pyupgrade
+        entry: pyupgrade
+        language: system
+        types: [ python ]
+
+      - id: trailing-whitespace-fixer
+        name: trailing-whitespace-fixer
+        entry: trailing-whitespace-fixer
+        language: system
+        types: [python]
+
+      - id: end-of-file-fixer
+        name: end-of-file-fixer
+        entry: end-of-file-fixer
+        language: system
+        types: [python]
+
+      - id: check-docstring-first
+        name: check-docstring-first
+        entry: check-docstring-first
+        language: system
+        types: [python]
+
+      - id: check-merge-conflict
+        name: check-merge-conflict
+        entry: check-merge-conflict
+        language: system
+        types: [python]
+
+      - id: no-commit-to-branch
+        name: no-commit-to-branch
+        entry: no-commit-to-branch -b develop -b main
+        pass_filenames: false
+        language: system
+        types: [python]
+
+      - id: check-added-large-files
+        name: check-added-large-files
+        entry: check-added-large-files
+        language: system
+        types: [python]
+
+      - id: code-formater
+        name: black
+        entry: poetry run python -m black app tests
+        language: system
+        types: [python]
+
+      - id: sort-imports
+        name: isort
+        entry: poetry run python -m isort app tests
+        language: system
+        types: [python]
+
+      - id: linter
+        name: flake8
+        entry: poetry run python -m flake8 --ignore=E501,W503,E226 app tests
+        language: system
+        types: [python]
+
+      - id: test
+        name: test
+        entry: poetry run python -m pytest -s -q tests --disable-warnings
+        pass_filenames: false
+        language: system
+        types: [python]
+
+      - id: typing
+        name: typing
+        entry: poetry run python -m mypy --exclude .venv tests
+        language: system
+        pass_filenames: false
+        types: [python]
+
+      - id: bandit
+        name: bandit
+        entry: poetry run python -m bandit -x tests -r app
+        language: system
+        types: [python]
+
+      - id: semgrep
+        name: semgrep
+        entry: poetry run semgrep scan
+        language: system
+        types: [python]

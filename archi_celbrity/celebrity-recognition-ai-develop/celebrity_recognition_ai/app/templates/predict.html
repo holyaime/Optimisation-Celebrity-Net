@@ -1,0 +1,111 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Predict {% endblock %}
+
+{% block content %}
+<!-- Resultat de la prédiction -->
+<div class="container-fluid" id="a">
+  <div class="row justify-content-center">
+      <div class="col-8" id="c">
+          <h2 class="text-center fw-bold mt-4">Predicted Probabilities</h2>
+          <div class="card">
+              <div class="row card-body">
+                  <canvas id="myChart"></canvas>
+              </div>
+          </div>
+          <button type="button" class="btn btn-rounded btn-lg text-white m-3" style="background-color: #1eb66B" onclick="window.location.href = '{{ url_for( 'home' ) }}';">
+            <i class="fa-solid fa-house"></i>
+          </button>
+      </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+
+  const ctx = document.getElementById('myChart');
+
+  function myFunction(x) {
+    if (x.matches) { // If media query matches
+      document.getElementById("c").className = "col-12"
+      document.getElementById("a").className = "container-fluid mt-5"
+    }
+  }
+  
+  // Create a MediaQueryList object
+  var x = window.matchMedia("(max-width: 1000px)")
+  
+  // Call listener function at run time
+  myFunction(x);
+  
+  // Attach listener function on state changes
+  x.addEventListener("change", function() {
+    myFunction(x);
+  });
+
+
+  lab = [
+      'Ado',
+      'Arafat',
+      'Didi',
+      'Drogba',
+      'Bedie',
+      'Gbagbo'
+    ]
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: lab,
+      datasets: [{
+        label: '% Pourcentage %',
+        data: {{predicts.probabilities}},
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.5)',
+          'rgba(54, 162, 235, 0.5)',
+          'rgba(255, 206, 86, 0.5)',
+          'rgba(75, 192, 192, 0.5)',
+          'rgba(153, 102, 255, 0.5)',
+          'rgba(255, 159, 64, 0.5)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      scales: {
+        x: {
+          beginAtZero: true,
+          suggestedMin: 0,
+          suggestedMax: 100
+        },
+
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
+      }
+    }
+  });
+
+  </script>
+{% endblock %}
+
+
+
+
+
+
+
+
